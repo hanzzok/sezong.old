@@ -16,11 +16,14 @@ Programmatic Markup Language
 ## Syntax
 
 - Decorator
-  ```
+
+  ```sezong
   [Text 'f1 'f2(argument) 'f3...]
   ```
+
 - Block Constructor
-  ```
+
+  ```sezong
   specialCharacterIdentifier requiredInput
   specialCharacterIdentifier requiredInput {
     optional data
@@ -30,12 +33,16 @@ Programmatic Markup Language
     optional data
   }
   ```
+
 - Normal Text
-  ```
+
+  ```sezong
   Write what you want to say.
   ```
+
 - Escaping
-  ```
+
+  ```sezong
   \escape \with \\ \character.
   ```
 
