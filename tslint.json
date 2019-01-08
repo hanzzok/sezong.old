@@ -1,0 +1,8 @@
+{
+  "defaultSeverity": "error",
+  "extends": ["tslint:recommended", "tslint-config-prettier"],
+  "rules": {
+    "interface-name": false,
+    "variable-name": [true, "allow-leading-underscore", "allow-pascal-case"]
+  }
+}

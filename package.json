@@ -1,0 +1,19 @@
+{
+  "name": "sezong",
+  "version": "0.1.0",
+  "license": "MIT",
+  "scripts": {
+    "test": "ts-node lib"
+  },
+  "dependencies": {
+    "@types/node": "^10.12.18",
+    "typescript": "^3.2.2"
+  },
+  "devDependencies": {
+    "@types/chalk": "^2.2.0",
+    "chalk": "^2.4.2",
+    "prettier": "^1.15.3",
+    "tslint": "^5.12.0",
+    "tslint-config-prettier": "^1.17.0"
+  }
+}
