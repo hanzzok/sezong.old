@@ -1,7 +1,27 @@
 {
   "name": "sezong",
+  "description": "Programming Markup Language",
   "version": "0.1.0",
+  "keywords": [
+    "markup",
+    "language",
+    "parser",
+    "compiler"
+  ],
   "license": "MIT",
+  "homepage": "https://github.com/RanolP/sezong",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RanolP/sezong.git"
+  },
+  "bugs": {
+    "url": "https://github.com/RanolP/sezong/issues"
+  },
+  "author": {
+    "name": "RanolP",
+    "email": "public.ranolp@gmail.com",
+    "url": "https://ranolp.github.io"
+  },
   "scripts": {
     "test": "jest"
   },
