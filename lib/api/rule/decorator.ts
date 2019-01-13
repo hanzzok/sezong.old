@@ -7,3 +7,5 @@ export default interface Decorator<
 > extends Rule<OptionalInput, Result> {
   readonly reduceIfTextEmpty?: false | null;
 }
+
+export type AnyDecorator = Decorator<any, RenderableText>;
