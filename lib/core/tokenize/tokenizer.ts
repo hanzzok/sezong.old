@@ -1,5 +1,4 @@
-import { Token, TokenType } from '../api/token';
-// import { Regex } from '../util';
+import { Token, TokenType } from '../../api/token';
 import Cache from './cache';
 import TokenizerState from './tokenizer.state';
 
@@ -8,8 +7,9 @@ export default function tokenize(
 ): Token[] {
   const tokens = [] as Token[];
 
-  const cache = new Cache();
   const state = new TokenizerState();
+  const cache = new Cache(state);
+  let beforeWhitespace = false;
 
   const chars: {
     [char: string]: TokenType;
@@ -31,34 +31,29 @@ export default function tokenize(
     typeof input === 'string' ? input : input.reduce((a, b) => a.concat(b), '');
 
   for (const char of source) {
-    if (state.beforeWhitespace) {
-      cache.appendTokenTo(tokens, TokenType.NormalText);
-      if (char === '\n') {
-        cache.append(state, '\n', true);
-        cache.appendTokenTo(tokens, TokenType.ParagraphSplit);
-        state.nextLine();
-      } else if (state.column === 0) {
-        tokens.push({
-          column: state.column,
-          line: state.line,
-          source: '\n',
-          type: TokenType.LineFeed
-        });
+    if (char === ' ') {
+      if (!beforeWhitespace) {
+        cache.appendTokenTo(tokens, TokenType.NormalText);
       }
+      beforeWhitespace = true;
+      cache.append(char);
+      continue;
+    } else if (beforeWhitespace) {
+      cache.appendTokenTo(tokens, TokenType.WhiteSpace);
+      beforeWhitespace = false;
     }
     if (char === '\n') {
       cache.appendTokenTo(tokens, TokenType.NormalText);
+      cache.append(char);
+      cache.appendTokenTo(tokens, TokenType.LineFeed);
       state.nextLine();
       continue;
     } else if (char in chars) {
       cache.appendTokenTo(tokens, TokenType.NormalText);
-      cache.append(state, char);
+      cache.append(char);
       cache.appendTokenTo(tokens, chars[char]);
-    } else if (char === ' ') {
-      cache.appendTokenTo(tokens, TokenType.NormalText);
-      cache.append(state, char);
     } else {
-      cache.append(state, char);
+      cache.append(char);
     }
 
     state.next();

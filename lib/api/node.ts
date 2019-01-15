@@ -1,10 +1,8 @@
+import { Pos } from './pos';
 import { Token } from './token';
 
 export interface Node {
-  readonly line: number;
-  readonly column: number;
-
-  readonly source: string;
+  readonly pos: Pos;
   readonly type: NodeType;
   readonly tokens: Token[];
 
@@ -13,16 +11,20 @@ export interface Node {
 
 export interface DecoratorData {
   readonly input: string;
-  readonly functions: Array<{
-    name: string;
-    arguments: string[];
-  }>;
+  readonly functions: DecoratorFunctionData[];
+}
+export interface DecoratorFunctionData {
+  name: string;
+  parameters: string[];
 }
 
 export interface BlockConstructorData {
   readonly name: string;
   readonly requiredInput: string;
-  readonly optionalInput?: any;
+  readonly optionalInput?:
+    | undefined
+    | string
+    | Array<string | [string, string]>;
 }
 
 export enum NodeType {

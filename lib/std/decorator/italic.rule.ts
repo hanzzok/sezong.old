@@ -2,15 +2,15 @@ import RenderableInline from '../../api/render/renderable.inline';
 import RenderableText from '../../api/render/renderable.text';
 import Decorator from '../../api/rule/decorator';
 
-export const BoldRule: Decorator<{}, BoldText> = {
-  compile(input: RenderableInline): BoldText {
-    return new BoldText(input);
+export const ItalicRule: Decorator<{}, ItalicText> = {
+  compile(input: RenderableInline): ItalicText {
+    return new ItalicText(input);
   },
-  name: 'bold',
+  name: 'italic',
   namespace: 'std'
 };
 
-export class BoldText implements RenderableText {
+export class ItalicText implements RenderableText {
   public readonly data: RenderableInline;
 
   constructor(data: RenderableInline) {
