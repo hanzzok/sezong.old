@@ -2,6 +2,7 @@ import chalk from 'chalk';
 import { BlockConstructorData, DecoratorData } from './api/node';
 import { MessageType } from './core/message';
 import { Parser } from './core/parse/parser';
+import ParserConfiguration from './core/parse/parser.configuration';
 import tokenize from './core/tokenize/tokenizer';
 import { Header1Rule } from './std/blockConstructor/header1.rule';
 import { YoutubeRule } from './std/blockConstructor/youtube.rule';
@@ -21,21 +22,24 @@ const decorators = [
 const blockConstructors = [Header1Rule, YoutubeRule];
 
 const source = `
+# Introduction { anchor = Title }
+
+| youtube vU3oF90WKpw
+
 [Programmatic 'bold] Markup Language
 
 You can go to the [Naver 'link(https://naver.com)] page.
-
-[Mixed Styles 'bold 'italic 'link(https://google.com) 'underline]
 `;
 
 const sourceLines = source.split('\n');
 
 const tokens = tokenize(source);
 
-const parser = new Parser(decorators, blockConstructors, tokens);
+const configuration = new ParserConfiguration(decorators, blockConstructors);
+const parser = new Parser(configuration, tokens);
 const nodes = parser.parse();
 
-for (const message of parser.messages) {
+for (const message of parser.state.messages) {
   let prefix: string = '   [?] ';
   let colorizer = chalk.reset;
   switch (message.type) {
@@ -90,17 +94,17 @@ for (const node of nodes) {
     )}:${chalk.yellow('' + node.pos.column)})`
   );
   console.log(
-    `  tokens: [${node.tokens
+    `  source: ${node.tokens
       .map(it =>
-        chalk.cyanBright(it.source.replace('\n', '\\n').replace('\r', '\\r'))
+        chalk.cyan(it.source.replace('\n', '\\n').replace('\r', '\\r'))
       )
-      .join(', ')}]`
+      .join('')}`
   );
   if (node.data) {
     if ('input' in node.data && 'functions' in node.data) {
       const data = node.data as DecoratorData;
       console.log(
-        `  ${chalk.cyanBright(data.input)} -> ${data.functions
+        `  ${chalk.cyan(data.input)} -> ${data.functions
           .map(
             it =>
               it.name +
@@ -111,10 +115,23 @@ for (const node of nodes) {
     } else if ('name' in node.data && 'requiredInput' in node.data) {
       const data = node.data as BlockConstructorData;
       console.log(
-        `  | ${chalk.cyanBright(data.name)}(${chalk.cyanBright(
-          data.requiredInput
-        )})`
+        `  | ${chalk.cyan(data.name)}(${chalk.cyan(data.requiredInput)})`
       );
+      if (data.optionalInput) {
+        for (const input of data.optionalInput) {
+          if (typeof input === 'string') {
+            console.log(
+              `  \\-- ${chalk
+                .cyan(input)
+                .split('\n')
+                .join('\n  |--')}`
+            );
+          } else {
+            const [key, value] = input;
+            console.log(`  \\-- ${chalk.cyan(key)} : ${chalk.cyan(value)}`);
+          }
+        }
+      }
     }
   }
 }

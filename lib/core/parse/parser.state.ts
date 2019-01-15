@@ -1,4 +1,5 @@
 import { Token, TokenType } from '../../api/token';
+import { Message } from '../message';
 import {
   CurrentTokenCondition,
   PrevCurrentTokenCondition,
@@ -7,6 +8,7 @@ import {
 
 export class ParseState {
   public readonly tokens: Token[];
+  public readonly messages: Message[] = [];
   private index: number = 0;
 
   constructor(tokens: Token[]) {
@@ -42,18 +44,17 @@ export class ParseState {
     return this.tokens[this.index];
   }
 
-  public skipWhile(condition: (current: Token) => boolean) {
-    if (!this.hasCurrent) {
-      return;
-    }
-    while (condition(this.currentToken) && this.hasNext) {
-      this.cursorNext();
-    }
+  public skipWhitespace(andLinefeed: boolean = false): Token[] {
+    return this.until(
+      (token: Token) =>
+        token.type === TokenType.WhiteSpace ||
+        (andLinefeed && token.type === TokenType.LineFeed)
+    );
   }
 
-  public until(condition: TokenCondition, eatLast: boolean): Token[] {
+  public until(condition: TokenCondition, eatLast: boolean = false): Token[] {
     const result: Token[] = [];
-    if (!this.hasPrev) {
+    if (!this.hasCurrent()) {
       return result;
     }
     while (this.checkCondition(condition) && this.hasNext) {

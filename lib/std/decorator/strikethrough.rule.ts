@@ -1,18 +1,19 @@
+import RenderableInline from '../../api/render/renderable.inline';
 import RenderableText from '../../api/render/renderable.text';
 import Decorator from '../../api/rule/decorator';
 
 export const StrikethroughRule: Decorator<{}, StrikethroughText> = {
-  compile(requiredInput: string): StrikethroughText {
-    return new StrikethroughText(requiredInput);
+  compile(input: RenderableInline): StrikethroughText {
+    return new StrikethroughText(input);
   },
   name: 'strikethrough',
   namespace: 'std'
 };
 
 export class StrikethroughText implements RenderableText {
-  public readonly source: string;
+  public readonly data: RenderableInline;
 
-  constructor(source: string) {
-    this.source = source;
+  constructor(data: RenderableInline) {
+    this.data = data;
   }
 }

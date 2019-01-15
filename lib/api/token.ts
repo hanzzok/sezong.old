@@ -16,6 +16,7 @@ export class Token {
 
 export enum TokenType {
   NormalText = 'NormalText',
+  WhiteSpace = 'WhiteSpace',
 
   CurlyBracketStart = 'CurlyBracketStart',
   CurlyBracketEnd = 'CurlyBracketEnd',

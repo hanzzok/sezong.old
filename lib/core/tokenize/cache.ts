@@ -1,6 +1,5 @@
 import { Pos } from '../../api/pos';
 import { Token, TokenType } from '../../api/token';
-import { Regex } from '../../util';
 import TokenizerState from './tokenizer.state';
 
 export default class Cache {
@@ -21,12 +20,7 @@ export default class Cache {
     this.state = state;
   }
 
-  public append(data: string, force?: boolean) {
-    if (!force) {
-      if (Regex.Blank.test(data)) {
-        return;
-      }
-    }
+  public append(data: string) {
     if (this.isBlank) {
       this.startPos = {
         column: this.state.pos.column,

@@ -1,18 +1,19 @@
+import RenderableInline from '../../api/render/renderable.inline';
 import RenderableText from '../../api/render/renderable.text';
 import Decorator from '../../api/rule/decorator';
 
 export const UnderlineRule: Decorator<{}, UnderlineText> = {
-  compile(requiredInput: string): UnderlineText {
-    return new UnderlineText(requiredInput);
+  compile(input: RenderableInline): UnderlineText {
+    return new UnderlineText(input);
   },
   name: 'underline',
   namespace: 'std'
 };
 
 export class UnderlineText implements RenderableText {
-  public readonly source: string;
+  public readonly data: RenderableInline;
 
-  constructor(source: string) {
-    this.source = source;
+  constructor(data: RenderableInline) {
+    this.data = data;
   }
 }

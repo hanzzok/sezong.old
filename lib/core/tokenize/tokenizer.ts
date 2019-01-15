@@ -9,6 +9,7 @@ export default function tokenize(
 
   const state = new TokenizerState();
   const cache = new Cache(state);
+  let beforeWhitespace = false;
 
   const chars: {
     [char: string]: TokenType;
@@ -30,9 +31,20 @@ export default function tokenize(
     typeof input === 'string' ? input : input.reduce((a, b) => a.concat(b), '');
 
   for (const char of source) {
+    if (char === ' ') {
+      if (!beforeWhitespace) {
+        cache.appendTokenTo(tokens, TokenType.NormalText);
+      }
+      beforeWhitespace = true;
+      cache.append(char);
+      continue;
+    } else if (beforeWhitespace) {
+      cache.appendTokenTo(tokens, TokenType.WhiteSpace);
+      beforeWhitespace = false;
+    }
     if (char === '\n') {
       cache.appendTokenTo(tokens, TokenType.NormalText);
-      cache.append(char, true);
+      cache.append(char);
       cache.appendTokenTo(tokens, TokenType.LineFeed);
       state.nextLine();
       continue;
@@ -40,9 +52,6 @@ export default function tokenize(
       cache.appendTokenTo(tokens, TokenType.NormalText);
       cache.append(char);
       cache.appendTokenTo(tokens, chars[char]);
-    } else if (char === ' ') {
-      cache.appendTokenTo(tokens, TokenType.NormalText);
-      cache.append(char);
     } else {
       cache.append(char);
     }

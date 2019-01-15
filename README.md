@@ -26,11 +26,15 @@ Programmatic Markup Language
   ```sezong
   specialCharacterIdentifier requiredInput
   specialCharacterIdentifier requiredInput {
-    optional data
+    str,
+    k = v,
+    k2 = v2
   }
   | identifier requiredInput
   | identifier requiredInput {
-    optional data
+    str,
+    k = v,
+    k2 = v2
   }
   ```
 

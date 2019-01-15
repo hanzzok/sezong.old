@@ -1,8 +1,12 @@
 import Renderable from '../render/renderable';
 
-export default interface Rule<OptionalInput, Result extends Renderable> {
+export default interface Rule<
+  RequiredInput,
+  OptionalInput,
+  Result extends Renderable
+> {
   readonly namespace: string;
   readonly name: string;
 
-  compile(requiredInput: string, optionalInput: OptionalInput): Result;
+  compile(requiredInput: RequiredInput, optionalInput: OptionalInput): Result;
 }
