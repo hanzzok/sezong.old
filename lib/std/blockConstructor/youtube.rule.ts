@@ -15,4 +15,8 @@ export class YoutubeBlock implements RenderableBlock {
   constructor(videoId: string) {
     this.videoId = videoId;
   }
+
+  public debug(): string {
+    return `Youtube(${this.videoId})`;
+  }
 }

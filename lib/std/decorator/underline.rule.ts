@@ -10,10 +10,12 @@ export const UnderlineRule: Decorator<{}, UnderlineText> = {
   namespace: 'std'
 };
 
-export class UnderlineText implements RenderableText {
-  public readonly data: RenderableInline;
-
+export class UnderlineText extends RenderableText {
   constructor(data: RenderableInline) {
-    this.data = data;
+    super(data);
+  }
+
+  public debug(): string {
+    return `Underline(${this.data.debug()})`;
   }
 }

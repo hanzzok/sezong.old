@@ -10,10 +10,12 @@ export const ItalicRule: Decorator<{}, ItalicText> = {
   namespace: 'std'
 };
 
-export class ItalicText implements RenderableText {
-  public readonly data: RenderableInline;
-
+export class ItalicText extends RenderableText {
   constructor(data: RenderableInline) {
-    this.data = data;
+    super(data);
+  }
+
+  public debug(): string {
+    return `Italic(${this.data.debug()})`;
   }
 }

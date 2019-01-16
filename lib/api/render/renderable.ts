@@ -1,1 +1,3 @@
-export default interface Renderable {}
+export default interface Renderable {
+  debug(): string;
+}

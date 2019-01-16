@@ -15,4 +15,8 @@ export class Header1Block implements RenderableBlock {
   constructor(text: string) {
     this.text = text;
   }
+
+  public debug(): string {
+    return `Header1(${this.text})`;
+  }
 }

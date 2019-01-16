@@ -10,10 +10,12 @@ export const BoldRule: Decorator<{}, BoldText> = {
   namespace: 'std'
 };
 
-export class BoldText implements RenderableText {
-  public readonly data: RenderableInline;
-
+export class BoldText extends RenderableText {
   constructor(data: RenderableInline) {
-    this.data = data;
+    super(data);
+  }
+
+  public debug(): string {
+    return `Bold(${this.data.debug()})`;
   }
 }

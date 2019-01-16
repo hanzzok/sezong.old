@@ -10,10 +10,12 @@ export const StrikethroughRule: Decorator<{}, StrikethroughText> = {
   namespace: 'std'
 };
 
-export class StrikethroughText implements RenderableText {
-  public readonly data: RenderableInline;
-
+export class StrikethroughText extends RenderableText {
   constructor(data: RenderableInline) {
-    this.data = data;
+    super(data);
+  }
+
+  public debug(): string {
+    return `Strikethrough(${this.data.debug()})`;
   }
 }

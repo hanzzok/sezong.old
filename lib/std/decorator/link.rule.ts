@@ -10,12 +10,12 @@ export const LinkRule: Decorator<string, LinkText> = {
   namespace: 'std'
 };
 
-export class LinkText implements RenderableText {
-  public readonly data: RenderableInline;
-  public readonly url: string;
+export class LinkText extends RenderableText {
+  constructor(data: RenderableInline, public readonly url: string) {
+    super(data);
+  }
 
-  constructor(data: RenderableInline, url: string) {
-    this.data = data;
-    this.url = url;
+  public debug(): string {
+    return `Link(${this.data.debug()}, ${this.url})`;
   }
 }
