@@ -6,5 +6,8 @@ module.exports = {
     '^.+\\.ts$': 'ts-jest'
   },
   testRegex: '.+\\.test\\.ts$',
-  moduleFileExtensions: ['ts', 'js', 'json']
+  moduleFileExtensions: ['ts', 'js', 'json'],
+
+  coverageDirectory: './coverage/',
+  collectCoverage: true
 };

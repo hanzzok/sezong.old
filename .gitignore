@@ -8,3 +8,6 @@ yarn.lock
 yarn-debug.log*
 yarn-error.log*
 .yarn-integrity
+
+## Tool Integrations
+coverage/
