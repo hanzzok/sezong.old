@@ -1,4 +1,4 @@
-import RenderableBlock from '../../api/render/renderable.block';
+import { RenderableBlock } from '../../api/render/renderable.block';
 import BlockConstructor from '../../api/rule/blockConstructor';
 
 export const Header1Rule: BlockConstructor<{}, Header1Block> = {
