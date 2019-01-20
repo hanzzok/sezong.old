@@ -6,6 +6,7 @@ import { link, render } from './core/link/linker';
 import { MessageType } from './core/message';
 import { Parser } from './core/parse/parser';
 import tokenize from './core/tokenize/tokenizer';
+import { CodeRule } from './std/blockConstructor/code.rule';
 import { Header1Rule } from './std/blockConstructor/header1.rule';
 import { YoutubeRule } from './std/blockConstructor/youtube.rule';
 import { BoldRule } from './std/decorator/bold.rule';
@@ -13,6 +14,7 @@ import { ItalicRule } from './std/decorator/italic.rule';
 import { LinkRule } from './std/decorator/link.rule';
 import { StrikethroughRule } from './std/decorator/strikethrough.rule';
 import { UnderlineRule } from './std/decorator/underline.rule';
+import { CodeRenderer } from './std/renderer/blockConstructor/code.renderer';
 import { Header1Renderer } from './std/renderer/blockConstructor/header1.renderer';
 import { YoutubeRenderer } from './std/renderer/blockConstructor/youtube.renderer';
 import { BoldRenderer } from './std/renderer/decorator/bold.renderer';
@@ -28,7 +30,7 @@ const decorators = [
   StrikethroughRule,
   UnderlineRule
 ];
-const blockConstructors = [Header1Rule, YoutubeRule];
+const blockConstructors = [Header1Rule, YoutubeRule, CodeRule];
 
 const source = `
 # Introduction { anchor = Title }
@@ -38,6 +40,14 @@ const source = `
 [Programmatic 'bold] Markup Language
 
 You can go to the [Naver 'link(https://naver.com)] page.
+
+| code js {
+import twitter from 'my-twitter-lib';
+
+const finalchild \= twitter.getUser('@finalchildmc');
+
+console.log(\`Hello, \${finalchild\\}!\`);
+}
 `;
 
 const sourceLines = source.split('\n');
@@ -156,6 +166,7 @@ HtmlPlatform.renderers.add(NormalTextRenderer);
 
 HtmlPlatform.renderers.add(Header1Renderer);
 HtmlPlatform.renderers.add(YoutubeRenderer);
+HtmlPlatform.renderers.add(CodeRenderer);
 
 HtmlPlatform.renderers.add(BoldRenderer);
 HtmlPlatform.renderers.add(LinkRenderer);

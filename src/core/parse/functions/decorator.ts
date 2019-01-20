@@ -1,5 +1,5 @@
 import { NodeType } from '../../../api/node';
-import { Token, TokenType } from '../../../api/token';
+import { TokenType, Token } from '../../../api/token';
 import { Message, MessageType } from '../../message';
 import ParserConfiguration from '../parser.configuration';
 import { ParseState } from '../parser.state';
@@ -16,10 +16,9 @@ export default function nextDecorator(
   const tokens = [state.cursorNext()];
   state.skipWhitespace();
   const text = state.until(
-    (prev, current) =>
-      (current.type !== TokenType.SingleQuote &&
-        current.type !== TokenType.SquareBracketEnd) ||
-      (prev !== null && prev.type === TokenType.BackSlash),
+    token =>
+      token.type !== TokenType.SingleQuote &&
+      token.type !== TokenType.SquareBracketEnd,
     false
   );
   tokens.push.apply(tokens, text);
@@ -28,7 +27,7 @@ export default function nextDecorator(
 
   const end = () => {
     const chunk = state.until(
-      (token: Token) =>
+      token =>
         token.type !== TokenType.LineFeed &&
         token.type !== TokenType.SquareBracketEnd,
       true
@@ -69,29 +68,40 @@ export default function nextDecorator(
 
     if (state.hasCurrent(TokenType.RoundBracketStart)) {
       functionTokens.push(state.cursorNext());
-      const parameters = state.until(
-        (prev, current) =>
-          (current.type !== TokenType.RoundBracketEnd &&
-            current.type !== TokenType.SquareBracketEnd) ||
-          (prev !== null && prev.type === TokenType.BackSlash),
-        false
+      const parameters: Token[][] = [];
+      while (
+        state.hasCurrent() &&
+        !state.hasCurrent(TokenType.RoundBracketEnd) &&
+        !state.hasCurrent(TokenType.SquareBracketEnd)
+      ) {
+        parameters.push(
+          state.until(
+            token =>
+              token.type !== TokenType.RoundBracketEnd &&
+              token.type !== TokenType.SquareBracketEnd &&
+              token.type !== TokenType.Comma,
+            false
+          )
+        );
+      }
+      functionTokens.push.apply(
+        functionTokens,
+        parameters.reduce((a, b) => a.concat(b), [])
       );
-      functionTokens.push.apply(functionTokens, parameters);
       if (!state.hasCurrent(TokenType.RoundBracketEnd)) {
         return new Message(
           MessageType.Error,
           'Decorator function invokation not completed',
-          parameters[0],
-          parameters.slice(-1)[0]
+          parameters[0][0],
+          parameters.slice(-1)[0].slice(-1)[0]
         );
       }
       functionTokens.push(state.cursorNext());
       functions.push({
         name: nameToken.source,
-        parameters: parameters
-          .map(it => it.source)
-          .join('')
-          .split(',')
+        parameters: parameters.map(parameterTokens =>
+          parameterTokens.map(it => it.source).join()
+        )
       });
     } else {
       functions.push({

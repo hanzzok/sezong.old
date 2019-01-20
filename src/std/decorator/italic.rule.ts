@@ -2,7 +2,7 @@ import { RenderableInline } from '../../api/render/renderable.inline';
 import { RenderableText } from '../../api/render/renderable.text';
 import Decorator from '../../api/rule/decorator';
 
-export const ItalicRule: Decorator<{}, ItalicText> = {
+export const ItalicRule: Decorator<ItalicText> = {
   compile(input: RenderableInline): ItalicText {
     return new ItalicText(input);
   },

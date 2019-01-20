@@ -1,4 +1,5 @@
 import { NodeType } from '../../../api/node';
+import { OptionalInput } from '../../../api/optionalInput';
 import { Token, TokenType } from '../../../api/token';
 import { ParseState } from '../parser.state';
 
@@ -34,7 +35,7 @@ export function nextBlockConstructorTail(tokens: Token[], state: ParseState) {
 
 function nextBlockConstructorOptionalInput(
   state: ParseState
-): [Token[], undefined | string | Array<string | [string, string]>] {
+): [Token[], OptionalInput] {
   if (!state.hasCurrent(TokenType.CurlyBracketStart)) {
     return [[], undefined];
   }
@@ -42,11 +43,10 @@ function nextBlockConstructorOptionalInput(
 
   const nextData = () =>
     state.until(
-      (prev, current) =>
-        (current.type !== TokenType.Assign &&
-          current.type !== TokenType.Comma &&
-          current.type !== TokenType.CurlyBracketEnd) ||
-        (prev !== null && prev.type === TokenType.BackSlash),
+      token =>
+        token.type !== TokenType.Assign &&
+        token.type !== TokenType.Comma &&
+        token.type !== TokenType.CurlyBracketEnd,
       false
     );
   let data = nextData();

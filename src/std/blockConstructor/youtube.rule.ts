@@ -1,7 +1,7 @@
 import { RenderableBlock } from '../../api/render/renderable.block';
 import BlockConstructor from '../../api/rule/blockConstructor';
 
-export const YoutubeRule: BlockConstructor<{}, YoutubeBlock> = {
+export const YoutubeRule: BlockConstructor<YoutubeBlock> = {
   compile(requiredInput: string): YoutubeBlock {
     return new YoutubeBlock(requiredInput);
   },

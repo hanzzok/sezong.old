@@ -1,10 +1,6 @@
 import { Token, TokenType } from '../../api/token';
 import { Message } from '../message';
-import {
-  CurrentTokenCondition,
-  PrevCurrentTokenCondition,
-  TokenCondition
-} from './types';
+import { TokenCondition } from './types';
 
 export class ParseState {
   public readonly tokens: Token[];
@@ -57,29 +53,20 @@ export class ParseState {
     if (!this.hasCurrent()) {
       return result;
     }
-    while (this.checkCondition(condition) && this.hasNext) {
-      result.push(this.cursorNext());
+    let beforeBackslash;
+    while ((beforeBackslash || condition(this.currentToken)) && this.hasNext) {
+      beforeBackslash = false;
+      const current = this.currentToken;
+      if (current.type === TokenType.BackSlash) {
+        beforeBackslash = true;
+        this.cursorNext();
+      } else {
+        result.push(this.cursorNext());
+      }
     }
     if (eatLast) {
       result.push(this.cursorNext());
     }
     return result;
-  }
-
-  public checkCondition(condition: TokenCondition): boolean {
-    switch (condition.length) {
-      case 1: {
-        return (condition as CurrentTokenCondition)(this.currentToken);
-      }
-      case 2: {
-        return (condition as PrevCurrentTokenCondition)(
-          this.hasPrev ? this.prevToken : null,
-          this.currentToken
-        );
-      }
-      default: {
-        return false;
-      }
-    }
   }
 }

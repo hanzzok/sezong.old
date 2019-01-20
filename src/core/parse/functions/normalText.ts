@@ -8,18 +8,12 @@ export default function nextNormalText(
   readTokens: Token[] = []
 ): Node | null {
   const tokens = readTokens.concat(
-    state.until((prev, current) => {
-      if (prev && prev.type === TokenType.BackSlash) {
-        return true;
-      }
-      switch (current.type) {
-        case TokenType.SquareBracketStart:
-        case TokenType.LineFeed:
-          return false;
-        default:
-          return true;
-      }
-    }, false)
+    state.until(
+      current =>
+        current.type !== TokenType.SquareBracketStart &&
+        current.type !== TokenType.LineFeed,
+      false
+    )
   );
   return tokens.length > 0
     ? {

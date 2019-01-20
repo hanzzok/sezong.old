@@ -2,7 +2,7 @@ import { RenderableInline } from '../../api/render/renderable.inline';
 import { RenderableText } from '../../api/render/renderable.text';
 import Decorator from '../../api/rule/decorator';
 
-export const LinkRule: Decorator<string, LinkText> = {
+export const LinkRule: Decorator<LinkText> = {
   compile(input: RenderableInline, url: string): LinkText {
     return new LinkText(input, url);
   },

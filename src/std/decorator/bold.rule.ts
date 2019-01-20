@@ -2,7 +2,7 @@ import { RenderableInline } from '../../api/render/renderable.inline';
 import { RenderableText } from '../../api/render/renderable.text';
 import Decorator from '../../api/rule/decorator';
 
-export const BoldRule: Decorator<{}, BoldText> = {
+export const BoldRule: Decorator<BoldText> = {
   compile(input: RenderableInline): BoldText {
     return new BoldText(input);
   },
