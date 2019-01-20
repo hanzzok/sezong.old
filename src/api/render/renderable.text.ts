@@ -1,7 +1,11 @@
-import RenderableInline from './renderable.inline';
+import { RenderableInline } from './renderable.inline';
 
-export default abstract class RenderableText implements RenderableInline {
-  constructor(public readonly data: RenderableInline) {}
+export abstract class RenderableText implements RenderableInline {
+  public readonly isEmpty: boolean;
+
+  constructor(public readonly data: RenderableInline) {
+    this.isEmpty = data.isEmpty;
+  }
 
   public abstract debug(): string;
 }

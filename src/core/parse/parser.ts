@@ -43,7 +43,6 @@ export class Parser {
     if (!this.state.hasCurrent()) {
       return null;
     }
-    this.state.skipWhitespace();
     let result: Result;
     switch (this.state.currentToken.type) {
       case TokenType.NormalText: {

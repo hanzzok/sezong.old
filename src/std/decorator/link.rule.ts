@@ -1,5 +1,5 @@
-import RenderableInline from '../../api/render/renderable.inline';
-import RenderableText from '../../api/render/renderable.text';
+import { RenderableInline } from '../../api/render/renderable.inline';
+import { RenderableText } from '../../api/render/renderable.text';
 import Decorator from '../../api/rule/decorator';
 
 export const LinkRule: Decorator<string, LinkText> = {

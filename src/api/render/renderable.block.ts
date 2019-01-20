@@ -1,3 +1,5 @@
 import Renderable from './renderable';
 
-export default interface RenderableBlock extends Renderable {}
+export abstract class RenderableBlock implements Renderable {
+  public abstract debug(): string;
+}

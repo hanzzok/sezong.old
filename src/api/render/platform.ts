@@ -1,12 +1,13 @@
 import Renderable from './renderable';
 import { Renderer } from './renderer';
 export class Platform<Result> {
-  public readonly name: string;
   public renderers: Set<Renderer<any, Result>> = new Set();
 
-  constructor(name: string) {
-    this.name = name;
-  }
+  constructor(
+    public readonly name: string,
+    private readonly composer: (left: Result, right: Result) => Result,
+    private readonly defaultValue: Result
+  ) {}
 
   public render(renderable: Renderable): Result {
     for (const renderer of this.renderers.values()) {
@@ -15,6 +16,12 @@ export class Platform<Result> {
       }
     }
 
-    throw new Error(`Unable to render: ${renderable.debug()}`);
+    throw new Error(
+      `Unable to render ${renderable.debug()} on ${this.name} platform.`
+    );
+  }
+
+  public compose(array: Result[]): Result {
+    return array.reduce(this.composer, this.defaultValue);
   }
 }

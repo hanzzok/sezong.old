@@ -28,8 +28,6 @@ export interface BlockConstructorData {
 }
 
 export enum NodeType {
-  Root = 'Root',
-
   NormalText = 'NormalText',
   ParagraphSplit = 'ParagraphSplit',
 

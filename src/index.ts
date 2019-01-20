@@ -1,8 +1,10 @@
 import chalk from 'chalk';
+import { writeFileSync } from 'fs';
 import { BlockConstructorData, DecoratorData } from './api/node';
+import CompilerConfiguration from './core/compiler.configuration';
+import { link, render } from './core/link/linker';
 import { MessageType } from './core/message';
 import { Parser } from './core/parse/parser';
-import ParserConfiguration from './core/parse/parser.configuration';
 import tokenize from './core/tokenize/tokenizer';
 import { Header1Rule } from './std/blockConstructor/header1.rule';
 import { YoutubeRule } from './std/blockConstructor/youtube.rule';
@@ -11,6 +13,13 @@ import { ItalicRule } from './std/decorator/italic.rule';
 import { LinkRule } from './std/decorator/link.rule';
 import { StrikethroughRule } from './std/decorator/strikethrough.rule';
 import { UnderlineRule } from './std/decorator/underline.rule';
+import { Header1Renderer } from './std/renderer/blockConstructor/header1.renderer';
+import { YoutubeRenderer } from './std/renderer/blockConstructor/youtube.renderer';
+import { BoldRenderer } from './std/renderer/decorator/bold.renderer';
+import { LinkRenderer } from './std/renderer/decorator/link.renderer';
+import { HtmlPlatform } from './std/renderer/htmlPlatform';
+import { NormalTextRenderer } from './std/renderer/normalText.renderer';
+import { ParagraphSplitRenderer } from './std/renderer/paragraphSplit.renderer';
 
 const decorators = [
   BoldRule,
@@ -35,8 +44,8 @@ const sourceLines = source.split('\n');
 
 const tokens = tokenize(source);
 
-const configuration = new ParserConfiguration(decorators, blockConstructors);
-const parser = new Parser(configuration, tokens);
+const configuration = new CompilerConfiguration(decorators, blockConstructors);
+const parser = new Parser(configuration.parserConfiguration, tokens);
 const nodes = parser.parse();
 
 for (const message of parser.state.messages) {
@@ -94,11 +103,11 @@ for (const node of nodes) {
     )}:${chalk.yellow('' + node.pos.column)})`
   );
   console.log(
-    `  source: ${node.tokens
+    `  source: '${node.tokens
       .map(it =>
         chalk.cyan(it.source.replace('\n', '\\n').replace('\r', '\\r'))
       )
-      .join('')}`
+      .join('')}'`
   );
   if (node.data) {
     if ('input' in node.data && 'functions' in node.data) {
@@ -135,3 +144,22 @@ for (const node of nodes) {
     }
   }
 }
+
+const renderables = link(configuration, nodes);
+
+for (const renderable of renderables) {
+  console.log(renderable.debug());
+}
+
+HtmlPlatform.renderers.add(ParagraphSplitRenderer);
+HtmlPlatform.renderers.add(NormalTextRenderer);
+
+HtmlPlatform.renderers.add(Header1Renderer);
+HtmlPlatform.renderers.add(YoutubeRenderer);
+
+HtmlPlatform.renderers.add(BoldRenderer);
+HtmlPlatform.renderers.add(LinkRenderer);
+
+const rendered = render(HtmlPlatform, renderables);
+console.log(rendered);
+writeFileSync('result.html', rendered);
