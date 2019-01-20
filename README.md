@@ -4,14 +4,15 @@ Programmatic Markup Language
 
 ## Definition
 
-- Decorator<br>
-  텍스트를 꾸며주는 인라인 함수입니다. 텍스트를 받아서 텍스트를 반환합니다.
-- Block Constructor<br>
-  텍스트 이외의 블록 레벨 정보를 넣습니다.
-- Normal Text<br>
-  일반 텍스트입니다.
-- Escaping<br>
-  역슬래시 뒤에 있는 문자 하나는 무조건 Normal Text로 판정됩니다.
+- Decorator - Inline function which decorates text. receives text, returns text.
+- Block Constructor - Inserts Block-level information which is not a text.
+  - Special Block Constructor - Block Constructor which starts with special character in ascii.
+  - Normal Block Constructor - Block Constructor which is not a Special Block Constructor.
+- Preprocessor - Before tokenize, Change a little bit of source.
+- Postprocessor - After parse, Change a little bit of node (normal text node only).
+- Rule - Decorator, Block Constructor, Preprocessor, and Postprocessor.
+- Normal Text - Just normal text.
+- Escaping - Escapes something in parsing Decorator or Block Constructor.
 
 ## Syntax
 
@@ -50,30 +51,67 @@ Programmatic Markup Language
   \escape \with \\ \character.
   ```
 
-## Predefined Decorators
+## Rules
 
-- 'i - make text italic
-- 'b - make text bold
-- 'u - make text underlined
-- 's - add strikethrough to text
-- 'kbd - add keyboard marker to text
-- 'keyinputs - seems like `'kbd`, but support the key combination (like `Ctrl + Space`)
-- 'link(url) - link to specific url
+### Preprocessors
 
-## Predefined Block Constructors
+- (todo) Emojify - convert `:name:` to `['emoji(name)]`.
 
-- \# text - heading level 1 (special char)
-- \## text - heading level 2 (special char)
-- \### text - heading level 3 (special char)
-- \#### text - heading level 4 (special char)
-- \##### text - heading level 5 (special char)
-- \###### text - heading level 6 (special char)
-- youtube videoId - embed youtube video
-- image url - embed image
-- code language { ...texts } - embed code block
-- \> text - quote
+### Postprocessors
 
-## Todo
+- (todo) Pretty Quote - convert pairs of qoutes to unicode quote `“”` and `‘’`.
+- (todo) Typographers' Symbol - convert `+-` to `±`, `...` to `…`, `---` to `—`, `--` to `–`, `(c)` or `(C)` to `©`, `(r)` or `(R)` to ®, `(tm)` or `(TM)` to `™`, `(p)` or `(P)` to `§`.
+- (todo) Smart Arrow - convert `-->`, `<--`, `<-->`, `==>`, `<==`, and `<==>` to, `→`, `←`, `↔`, `⇒`, `⇐`, `⇔`.
+
+### Predefined Decorators
+
+We're sure that many decorator will be separated with npm package like babel.
+We'll provide a preset.
+
+- `'italic` - make text italic
+- `'bold` - make text bold
+- `'underline` - make text underlined
+- `'strikethrough` - add strikethrough to text
+- `'kbd` - add keyboard marker to text
+- `'keyinputs` - seems like `'kbd`, but support the key combination (like `Ctrl + Space`)
+- `'link(url)` - link to specific url
+- `'emoji(name)` - add emoji to the end of text
+- `'icon(name)` - add icon to the end of text
+- `'sub` - make text subscript
+- `'sup` - make text subscript
+- `'mark` - make text marked
+- `'fn` - make text footnote
+- `'abbr(meaning)` - Add abbreviations
+- `'checkbox(true or false)` - Add (un)checked checkbox to end of text. not modifiable.
+- `'math` - parse text as LaTeX math.
+- `'userAt(platform: twitter | youtube | telegram)` - create mention.
+- `'br` - add line break to end of text.
+
+### Predefined Block Constructors
+
+#### Special Block Constructors
+
+- `# text { toc: boolean = true }` - heading level 1
+- `## text { toc: boolean = true }` - heading level 2
+- `### text { toc: boolean = true }` - heading level 3
+- `#### text { toc: boolean = false }` - heading level 4
+- `##### text { toc: boolean = false }` - heading level 5
+- `###### text { toc: boolean = false }` - heading level 6
+- `> text` - quote
+- `---` - horizontal line
+
+#### Normal Block Constructors
+
+- `youtube videoId` - embed youtube video
+- `image url { width: string = auto, height: string = auto}` - embed image
+- `code language { ...texts, highlight: int[] = [] }` - code block
+- `container name { ...texts }` - container block
+- `include fileUrl` - include file
+- `math { ...texts }` - math block
+- `toc { maxIncludes: number = 3 }` - generate ToC (Table of Contents)
+- `comment { ...texts }` - comment block, must be ignored
+
+## Todos
 
 - Native-Level Table Syntax
 - Native-Level List Syntax
