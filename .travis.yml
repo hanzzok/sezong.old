@@ -6,9 +6,10 @@ notifications:
   slack:
     secure: H6bhx1iSlqgGpeO57fFcDI4N6D0b5TvK8HwXfirJhGZCuok6+QTiZgn2/bObHpilEmWaIPpGru1dkx1TbLfbpFxpptQI9YLZy8xKTOF0fJiWCLGhVJAM5FCFEOVXqbrsZff25N4+k9Sl3ZjS7JImdnCV7PM7AmeGBy07rgh77icicZMPK+OmQASkBXCiajUk6+KozXAucph7tBBizV1oKeAY4WWGnV2ZBaanzNl4fERiqgCMt9S933s656IdtvaIzWCox2ZNNPQwtzf+GOMIQJ0OBz4BnJSNKVMPJd276CVn57OstKWrOT3m2Y+tbE2kOHFD7n1c+SfnpOzTSHmlfrMV9dSvSgowwM9pqh09yjpLiFJzXkjn8iFJvybZRYwgpP/JHW4R1NgKZUE+eMJm5poNU/6kyvJUyYwDjx18InUWvZb20sJo3cbT9UfEsHC0Lp0VSp9ehR7+mxsrVumF+YoruO6DVSrsxrFkJqZ5rI99r/uuloGKEJ1vns/49VD8HbRpxdto3h4bP74ZbWR0sxfQYZ3u5/JCQVCqICn3eeF3u1t7Lvu+ITV/GD09z9Io/160IpmRpjDiK4iV0cMSwAo/MW6jetzvkX8CtP89sJg21LFOzjFLqrSNaDXpIhCeK779L7281DcBQKfCQS6hr95b0ajPck0tw55wlxogra4=
 install:
-  - npm install
+  - yarn install
 script:
   - commitlint-travis
-  - npm install codecov -g
+  - yarn global add codecov
+  - yarn test
 after_success:
   - codecov -f coverage/clover.xml
