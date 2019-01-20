@@ -1,4 +1,4 @@
-import Renderable from './renderable';
+import { Renderable } from './renderable';
 import { Renderer } from './renderer';
 export class Platform<Result> {
   public renderers: Set<Renderer<any, Result>> = new Set();

@@ -4,12 +4,14 @@ import {
   Node,
   NodeType
 } from '../../api/node';
-import { Platform } from '../../api/render/platform';
-import Renderable from '../../api/render/renderable';
-import { RenderableInline } from '../../api/render/renderable.inline';
-import { NormalText } from '../../api/render/renderable.normalText';
-import { ParagraphSplitBlock } from '../../api/render/renderable.paragraphSplit';
-import CompilerConfiguration from '../compiler.configuration';
+import { Platform } from '../../api/platform';
+import {
+  NormalText,
+  ParagraphSplitBlock,
+  Renderable,
+  RenderableInline
+} from '../../api/renderable';
+import CompilerConfiguration from '../compiler-configuration';
 
 export function link(
   configuration: CompilerConfiguration,

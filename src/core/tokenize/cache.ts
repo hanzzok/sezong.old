@@ -1,6 +1,6 @@
 import { Pos } from '../../api/pos';
 import { Token, TokenType } from '../../api/token';
-import TokenizerState from './tokenizer.state';
+import TokenizerState from './tokenizer-state';
 
 export default class Cache {
   public data: string = '';

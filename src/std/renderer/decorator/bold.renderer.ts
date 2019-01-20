@@ -1,6 +1,6 @@
-import { Renderer } from '../../../api/render/renderer';
+import { Renderer } from '../../../api/renderer';
 import { BoldText } from '../../decorator/bold.rule';
-import { HtmlPlatform } from '../htmlPlatform';
+import { HtmlPlatform } from '../html-platform';
 
 export const BoldRenderer: Renderer<BoldText, string> = {
   canRender: renderable => renderable instanceof BoldText,

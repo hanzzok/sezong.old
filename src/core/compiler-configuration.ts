@@ -1,6 +1,5 @@
-import { AnyBlockConstructor } from '../api/rule/blockConstructor';
-import { AnyDecorator } from '../api/rule/decorator';
-import ParserConfiguration from './parse/parser.configuration';
+import { AnyBlockConstructor, AnyDecorator } from '../api/rule';
+import ParserConfiguration from './parse/parser-configuration';
 
 export default class CompilerConfiguration {
   public readonly decorators: AnyDecorator[];

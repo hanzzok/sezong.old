@@ -1,7 +1,7 @@
 import { Token, TokenType } from '../../../api/token';
 
 import { Node, NodeType } from '../../../api/node';
-import { ParseState } from '../parser.state';
+import { ParseState } from '../parser-state';
 
 export default function nextNormalText(
   state: ParseState,

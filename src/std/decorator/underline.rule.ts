@@ -1,6 +1,5 @@
-import { RenderableInline } from '../../api/render/renderable.inline';
-import { RenderableText } from '../../api/render/renderable.text';
-import Decorator from '../../api/rule/decorator';
+import { RenderableInline, RenderableText } from '../../api/renderable';
+import { Decorator } from '../../api/rule';
 
 export const UnderlineRule: Decorator<UnderlineText> = {
   compile(input: RenderableInline): UnderlineText {

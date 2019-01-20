@@ -1,6 +1,6 @@
-import { joinOptionalInput, OptionalInput } from '../../api/optionalInput';
-import { RenderableBlock } from '../../api/render/renderable.block';
-import BlockConstructor from '../../api/rule/blockConstructor';
+import { joinOptionalInput, OptionalInput } from '../../api/optional-input';
+import { RenderableBlock } from '../../api/renderable';
+import { BlockConstructor } from '../../api/rule';
 
 export const CodeRule: BlockConstructor<CodeBlock> = {
   compile(requiredInput: string, source: OptionalInput): CodeBlock {

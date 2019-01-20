@@ -1,12 +1,12 @@
 import { Node, NodeType } from '../../api/node';
 import { Token, TokenType } from '../../api/token';
 import { Message } from '../message';
-import { nextNormalBlockConstructor } from './functions/blockConstructor.normal';
-import { nextSpecialBlockConstructor } from './functions/blockConstructor.special';
+import { nextNormalBlockConstructor } from './functions/block-constructor-normal';
+import { nextSpecialBlockConstructor } from './functions/block-constructor-special';
 import nextDecorator from './functions/decorator';
-import nextNormalText from './functions/normalText';
-import ParserConfiguration from './parser.configuration';
-import { ParseState } from './parser.state';
+import nextNormalText from './functions/normal-text';
+import ParserConfiguration from './parser-configuration';
+import { ParseState } from './parser-state';
 import { Result } from './types';
 
 export class Parser {

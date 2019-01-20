@@ -1,6 +1,6 @@
 import { Token, TokenType } from '../../api/token';
 import Cache from './cache';
-import TokenizerState from './tokenizer.state';
+import TokenizerState from './tokenizer-state';
 
 export default function tokenize(
   input: string | TemplateStringsArray

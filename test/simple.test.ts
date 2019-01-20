@@ -1,7 +1,7 @@
 import { NodeType } from '../src/api/node';
 import { MessageType } from '../src/core/message';
 import { Parser } from '../src/core/parse/parser';
-import ParserConfiguration from '../src/core/parse/parser.configuration';
+import ParserConfiguration from '../src/core/parse/parser-configuration';
 import tokenize from '../src/core/tokenize/tokenizer';
 import { Header1Rule } from '../src/std/blockConstructor/header1.rule';
 import { YoutubeRule } from '../src/std/blockConstructor/youtube.rule';

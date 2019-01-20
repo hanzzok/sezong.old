@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import { writeFileSync } from 'fs';
 import { BlockConstructorData, DecoratorData } from './api/node';
-import CompilerConfiguration from './core/compiler.configuration';
+import CompilerConfiguration from './core/compiler-configuration';
 import { link, render } from './core/link/linker';
 import { MessageType } from './core/message';
 import { Parser } from './core/parse/parser';
@@ -14,14 +14,14 @@ import { ItalicRule } from './std/decorator/italic.rule';
 import { LinkRule } from './std/decorator/link.rule';
 import { StrikethroughRule } from './std/decorator/strikethrough.rule';
 import { UnderlineRule } from './std/decorator/underline.rule';
-import { CodeRenderer } from './std/renderer/blockConstructor/code.renderer';
-import { Header1Renderer } from './std/renderer/blockConstructor/header1.renderer';
-import { YoutubeRenderer } from './std/renderer/blockConstructor/youtube.renderer';
+import { CodeRenderer } from './std/renderer/block-constructor/code.renderer';
+import { Header1Renderer } from './std/renderer/block-constructor/header1.renderer';
+import { YoutubeRenderer } from './std/renderer/block-constructor/youtube.renderer';
 import { BoldRenderer } from './std/renderer/decorator/bold.renderer';
 import { LinkRenderer } from './std/renderer/decorator/link.renderer';
-import { HtmlPlatform } from './std/renderer/htmlPlatform';
-import { NormalTextRenderer } from './std/renderer/normalText.renderer';
-import { ParagraphSplitRenderer } from './std/renderer/paragraphSplit.renderer';
+import { HtmlPlatform } from './std/renderer/html-platform';
+import { NormalTextRenderer } from './std/renderer/normal-text.renderer';
+import { ParagraphSplitRenderer } from './std/renderer/paragraph-split.renderer';
 
 const decorators = [
   BoldRule,

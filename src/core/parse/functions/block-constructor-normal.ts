@@ -1,9 +1,9 @@
 import { TokenType } from '../../../api/token';
-import ParserConfiguration from '../parser.configuration';
-import { ParseState } from '../parser.state';
+import ParserConfiguration from '../parser-configuration';
+import { ParseState } from '../parser-state';
 import { Result } from '../types';
-import { nextBlockConstructorTail } from './blockConstructor.tail';
-import nextNormalText from './normalText';
+import { nextBlockConstructorTail } from './block-constructor-tail';
+import nextNormalText from './normal-text';
 
 export function nextNormalBlockConstructor(
   configuration: ParserConfiguration,

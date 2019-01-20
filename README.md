@@ -1,14 +1,8 @@
-![travis](https://img.shields.io/travis/com/langsezong/sezong.svg)
-
-![codecov](https://img.shields.io/codecov/c/github/langsezong/sezong/master.svg)
-
-![language-top](https://img.shields.io/github/languages/top/langsezong/sezong.svg)
-
-![snyk-vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/langsezong/sezong.svg)
+![travis](https://img.shields.io/travis/com/langsezong/sezong.svg) ![codecov](https://img.shields.io/codecov/c/github/langsezong/sezong/master.svg) ![language-top](https://img.shields.io/github/languages/top/langsezong/sezong.svg) ![snyk-vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/langsezong/sezong.svg)
 
 # Sezong
 
-Programmatic Markup Language
+Sezong: A new way to create document.
 
 ## Definition
 

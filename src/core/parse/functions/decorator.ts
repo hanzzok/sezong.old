@@ -1,10 +1,10 @@
 import { NodeType } from '../../../api/node';
-import { TokenType, Token } from '../../../api/token';
+import { Token, TokenType } from '../../../api/token';
 import { Message, MessageType } from '../../message';
-import ParserConfiguration from '../parser.configuration';
-import { ParseState } from '../parser.state';
+import ParserConfiguration from '../parser-configuration';
+import { ParseState } from '../parser-state';
 import { Result } from '../types';
-import nextNormalText from './normalText';
+import nextNormalText from './normal-text';
 
 export default function nextDecorator(
   state: ParseState,

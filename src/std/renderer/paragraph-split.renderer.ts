@@ -1,6 +1,6 @@
-import { ParagraphSplitBlock } from '../../api/render/renderable.paragraphSplit';
-import { Renderer } from '../../api/render/renderer';
-import { HtmlPlatform } from './htmlPlatform';
+import { ParagraphSplitBlock } from '../../api/renderable';
+import { Renderer } from '../../api/renderer';
+import { HtmlPlatform } from './html-platform';
 
 export const ParagraphSplitRenderer: Renderer<ParagraphSplitBlock, string> = {
   canRender: renderable => renderable instanceof ParagraphSplitBlock,

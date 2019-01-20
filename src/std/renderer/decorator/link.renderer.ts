@@ -1,6 +1,6 @@
-import { Renderer } from '../../../api/render/renderer';
+import { Renderer } from '../../../api/renderer';
 import { LinkText } from '../../decorator/link.rule';
-import { HtmlPlatform } from '../htmlPlatform';
+import { HtmlPlatform } from '../html-platform';
 
 export const LinkRenderer: Renderer<LinkText, string> = {
   canRender: renderable => renderable instanceof LinkText,

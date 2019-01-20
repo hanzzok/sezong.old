@@ -1,7 +1,7 @@
 import { NodeType } from '../../../api/node';
-import { OptionalInput } from '../../../api/optionalInput';
+import { OptionalInput } from '../../../api/optional-input';
 import { Token, TokenType } from '../../../api/token';
-import { ParseState } from '../parser.state';
+import { ParseState } from '../parser-state';
 
 export function nextBlockConstructorTail(tokens: Token[], state: ParseState) {
   const name = tokens.slice(-1)[0];

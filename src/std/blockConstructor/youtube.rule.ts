@@ -1,5 +1,5 @@
-import { RenderableBlock } from '../../api/render/renderable.block';
-import BlockConstructor from '../../api/rule/blockConstructor';
+import { RenderableBlock } from '../../api/renderable';
+import { BlockConstructor } from '../../api/rule';
 
 export const YoutubeRule: BlockConstructor<YoutubeBlock> = {
   compile(requiredInput: string): YoutubeBlock {

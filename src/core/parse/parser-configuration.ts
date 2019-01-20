@@ -1,7 +1,4 @@
-import { AnyDecorator } from '../../api/rule/decorator';
-
-import { AnyBlockConstructor } from '../../api/rule/blockConstructor';
-
+import { AnyBlockConstructor, AnyDecorator } from '../../api/rule';
 import { Regex } from '../../util';
 
 export default class ParserConfiguration {
