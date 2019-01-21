@@ -29,13 +29,17 @@ Sezong: A new way to create document.
   ```sezong
   specialCharacterIdentifier requiredInput
   specialCharacterIdentifier requiredInput {
-    str,
+    str
+  }
+  specialCharacterIdentifier requiredInput {
     k = v,
     k2 = v2
   }
   | identifier requiredInput
   | identifier requiredInput {
-    str,
+    str
+  }
+  | identifier requiredInput {
     k = v,
     k2 = v2
   }

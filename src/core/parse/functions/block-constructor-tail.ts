@@ -1,20 +1,27 @@
 import { NodeType } from '../../../api/node';
-import { OptionalInput } from '../../../api/optional-input';
+import { BlockOptionalInput } from '../../../api/optional-input';
 import { Token, TokenType } from '../../../api/token';
 import { ParseState } from '../parser-state';
+import { Result } from '../types';
 
-export function nextBlockConstructorTail(tokens: Token[], state: ParseState) {
+export function nextBlockConstructorTail(
+  tokens: Token[],
+  receiveDocument: boolean,
+  state: ParseState
+): Result {
   const name = tokens.slice(-1)[0];
   tokens.push.apply(tokens, state.skipWhitespace());
   const requiredInput = state.until(
     (token: Token) =>
       token.type !== TokenType.LineFeed &&
-      token.type !== TokenType.CurlyBracketStart,
-    false
+      token.type !== TokenType.CurlyBracketStart
   );
   tokens.push.apply(tokens, requiredInput);
 
-  const [optionalInputTokens, data] = nextBlockConstructorOptionalInput(state);
+  const [optionalInputTokens, data] = nextBlockConstructorOptionalInput(
+    receiveDocument,
+    state
+  );
 
   tokens.push.apply(tokens, optionalInputTokens);
 
@@ -34,36 +41,62 @@ export function nextBlockConstructorTail(tokens: Token[], state: ParseState) {
 }
 
 function nextBlockConstructorOptionalInput(
+  receiveDocument: boolean,
   state: ParseState
-): [Token[], OptionalInput] {
+): [Token[], BlockOptionalInput] {
   if (!state.hasCurrent(TokenType.CurlyBracketStart)) {
     return [[], undefined];
   }
   const tokens = [state.cursorNext()];
 
+  let curly = 1;
+
+  if (receiveDocument) {
+    const document = state.until(
+      token => {
+        if (token.type === TokenType.CurlyBracketStart) {
+          curly++;
+        } else if (token.type === TokenType.CurlyBracketEnd) {
+          curly--;
+        }
+        return curly !== 0;
+      },
+      {
+        escape: false
+      }
+    );
+    return [tokens.concat(document), document.map(it => it.source).join('')];
+  }
+
   const nextData = () =>
-    state.until(
-      token =>
+    state.until(token => {
+      if (token.type === TokenType.CurlyBracketStart) {
+        curly++;
+      } else if (token.type === TokenType.CurlyBracketEnd) {
+        curly--;
+      }
+      return (
         token.type !== TokenType.Assign &&
         token.type !== TokenType.Comma &&
-        token.type !== TokenType.CurlyBracketEnd,
-      false
-    );
+        curly !== 0
+      );
+    });
   let data = nextData();
   let assignState: null | Token[] = null;
-  const result: Array<string | [string, string]> = [];
+  const result: {
+    [key: string]: string;
+  } = {};
   const process = () => {
-    if (assignState) {
-      result.push([
+    if (assignState !== data && assignState) {
+      result[
         assignState
           .map(it => it.source)
           .join('')
-          .trim(),
-        data
-          .map(it => it.source)
-          .join('')
           .trim()
-      ]);
+      ] = data
+        .map(it => it.source)
+        .join('')
+        .trim();
       assignState = null;
     } else if (
       data.length > 0 &&
@@ -71,7 +104,8 @@ function nextBlockConstructorOptionalInput(
         it => it.type !== TokenType.WhiteSpace && it.type !== TokenType.LineFeed
       )
     ) {
-      result.push(data.map(it => it.source).join(''));
+      // warning message be ignored
+      data.map(it => it.source).join('');
       data = [];
     }
   };
@@ -95,10 +129,6 @@ function nextBlockConstructorOptionalInput(
   process();
 
   tokens.push(state.cursorNext());
-
-  if (result.length === 0 && typeof result[0] === 'string') {
-    return [tokens, result[0]];
-  }
 
   return [tokens, result];
 }

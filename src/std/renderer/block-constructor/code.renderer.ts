@@ -1,5 +1,5 @@
 import { Renderer } from '../../../api/renderer';
-import { CodeBlock } from '../../blockConstructor/code.rule';
+import { CodeBlock } from '../../block-constructor/code.rule';
 import { HtmlPlatform } from '../html-platform';
 
 export const CodeRenderer: Renderer<CodeBlock, string> = {

@@ -1,36 +1,19 @@
 import chalk from 'chalk';
 import { writeFileSync } from 'fs';
 import { BlockConstructorData, DecoratorData } from './api/node';
-import CompilerConfiguration from './core/compiler-configuration';
-import { link, render } from './core/link/linker';
+import Compiler from './core/compiler';
 import { MessageType } from './core/message';
-import { Parser } from './core/parse/parser';
-import tokenize from './core/tokenize/tokenizer';
-import { CodeRule } from './std/blockConstructor/code.rule';
-import { Header1Rule } from './std/blockConstructor/header1.rule';
-import { YoutubeRule } from './std/blockConstructor/youtube.rule';
+import { CodeRule } from './std/block-constructor/code.rule';
+import { Header1Rule } from './std/block-constructor/header1.rule';
+import { YoutubeRule } from './std/block-constructor/youtube.rule';
 import { BoldRule } from './std/decorator/bold.rule';
-import { ItalicRule } from './std/decorator/italic.rule';
 import { LinkRule } from './std/decorator/link.rule';
-import { StrikethroughRule } from './std/decorator/strikethrough.rule';
-import { UnderlineRule } from './std/decorator/underline.rule';
 import { CodeRenderer } from './std/renderer/block-constructor/code.renderer';
 import { Header1Renderer } from './std/renderer/block-constructor/header1.renderer';
 import { YoutubeRenderer } from './std/renderer/block-constructor/youtube.renderer';
 import { BoldRenderer } from './std/renderer/decorator/bold.renderer';
 import { LinkRenderer } from './std/renderer/decorator/link.renderer';
 import { HtmlPlatform } from './std/renderer/html-platform';
-import { NormalTextRenderer } from './std/renderer/normal-text.renderer';
-import { ParagraphSplitRenderer } from './std/renderer/paragraph-split.renderer';
-
-const decorators = [
-  BoldRule,
-  ItalicRule,
-  LinkRule,
-  StrikethroughRule,
-  UnderlineRule
-];
-const blockConstructors = [Header1Rule, YoutubeRule, CodeRule];
 
 const source = `
 # Introduction { anchor = Title }
@@ -42,23 +25,32 @@ const source = `
 You can go to the [Naver 'link(https://naver.com)] page.
 
 | code js {
-import twitter from 'my-twitter-lib';
-
-const finalchild \= twitter.getUser('@finalchildmc');
-
-console.log(\`Hello, \${finalchild\\}!\`);
+  const RanolP     = createUser('RanolP');
+  const finalchild = createUser('finalchild');
+  const Danuel     = createUser('Danuel'),
+        kmc7468    = createUser('static');
 }
 `;
 
 const sourceLines = source.split('\n');
 
-const tokens = tokenize(source);
+const compiler = new Compiler(HtmlPlatform);
 
-const configuration = new CompilerConfiguration(decorators, blockConstructors);
-const parser = new Parser(configuration.parserConfiguration, tokens);
-const nodes = parser.parse();
+compiler.addDecorator(BoldRule, BoldRenderer);
+// compiler.addDecorator(ItalicRule, ItalicRenderer);
+compiler.addDecorator(LinkRule, LinkRenderer);
+// compiler.addDecorator(StrikethroughRule, StrikethroughRenderer);
+// compiler.addDecorator(UnderlineRule, UnderlineRenderer);
 
-for (const message of parser.state.messages) {
+compiler.addBlockConstructor(Header1Rule, Header1Renderer);
+compiler.addBlockConstructor(YoutubeRule, YoutubeRenderer);
+compiler.addBlockConstructor(CodeRule, CodeRenderer);
+
+const tokens = compiler.tokenize(source);
+
+const [nodes, messages] = compiler.parse(tokens);
+
+for (const message of messages) {
   let prefix: string = '   [?] ';
   let colorizer = chalk.reset;
   switch (message.type) {
@@ -137,17 +129,19 @@ for (const node of nodes) {
         `  | ${chalk.cyan(data.name)}(${chalk.cyan(data.requiredInput)})`
       );
       if (data.optionalInput) {
-        for (const input of data.optionalInput) {
-          if (typeof input === 'string') {
+        const input = data.optionalInput;
+        if (typeof input === 'string') {
+          console.log(
+            `  |-- ${chalk
+              .cyan(input)
+              .split('\n')
+              .join('\n  |--')}`
+          );
+        } else {
+          for (const key of Object.keys(input)) {
             console.log(
-              `  \\-- ${chalk
-                .cyan(input)
-                .split('\n')
-                .join('\n  |--')}`
+              `  |-- ${chalk.cyan(key)} : ${chalk.cyan((input as any)[key])}`
             );
-          } else {
-            const [key, value] = input;
-            console.log(`  \\-- ${chalk.cyan(key)} : ${chalk.cyan(value)}`);
           }
         }
       }
@@ -155,22 +149,12 @@ for (const node of nodes) {
   }
 }
 
-const renderables = link(configuration, nodes);
+const renderables = compiler.link(nodes);
 
 for (const renderable of renderables) {
   console.log(renderable.debug());
 }
 
-HtmlPlatform.renderers.add(ParagraphSplitRenderer);
-HtmlPlatform.renderers.add(NormalTextRenderer);
-
-HtmlPlatform.renderers.add(Header1Renderer);
-HtmlPlatform.renderers.add(YoutubeRenderer);
-HtmlPlatform.renderers.add(CodeRenderer);
-
-HtmlPlatform.renderers.add(BoldRenderer);
-HtmlPlatform.renderers.add(LinkRenderer);
-
-const rendered = render(HtmlPlatform, renderables);
+const rendered = compiler.render(renderables);
 console.log(rendered);
 writeFileSync('result.html', rendered);

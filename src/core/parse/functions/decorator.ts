@@ -1,14 +1,14 @@
 import { NodeType } from '../../../api/node';
 import { Token, TokenType } from '../../../api/token';
+import CompilerConfiguration from '../../compiler-configuration';
 import { Message, MessageType } from '../../message';
-import ParserConfiguration from '../parser-configuration';
 import { ParseState } from '../parser-state';
 import { Result } from '../types';
 import nextNormalText from './normal-text';
 
 export default function nextDecorator(
   state: ParseState,
-  configuration: ParserConfiguration
+  configuration: CompilerConfiguration
 ): Result {
   if (!state.hasCurrent(TokenType.SquareBracketStart)) {
     return nextNormalText(state, [state.cursorNext()]);
@@ -18,8 +18,7 @@ export default function nextDecorator(
   const text = state.until(
     token =>
       token.type !== TokenType.SingleQuote &&
-      token.type !== TokenType.SquareBracketEnd,
-    false
+      token.type !== TokenType.SquareBracketEnd
   );
   tokens.push.apply(tokens, text);
 
@@ -30,7 +29,9 @@ export default function nextDecorator(
       token =>
         token.type !== TokenType.LineFeed &&
         token.type !== TokenType.SquareBracketEnd,
-      true
+      {
+        eatLast: true
+      }
     );
     return chunk.slice(-2)[0];
   };
@@ -79,8 +80,7 @@ export default function nextDecorator(
             token =>
               token.type !== TokenType.RoundBracketEnd &&
               token.type !== TokenType.SquareBracketEnd &&
-              token.type !== TokenType.Comma,
-            false
+              token.type !== TokenType.Comma
           )
         );
       }

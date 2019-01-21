@@ -6,7 +6,8 @@ export const Header1Rule: BlockConstructor<Header1Block> = {
     return new Header1Block(requiredInput);
   },
   name: '#',
-  namespace: 'std'
+  namespace: 'std',
+  receiveDocument: false
 };
 
 export class Header1Block implements RenderableBlock {

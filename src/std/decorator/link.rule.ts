@@ -2,8 +2,8 @@ import { RenderableInline, RenderableText } from '../../api/renderable';
 import { Decorator } from '../../api/rule';
 
 export const LinkRule: Decorator<LinkText> = {
-  compile(input: RenderableInline, url: string): LinkText {
-    return new LinkText(input, url);
+  compile(input: RenderableInline, parameter: string[]): LinkText {
+    return new LinkText(input, parameter[0]);
   },
   name: 'link',
   namespace: 'std'

@@ -48,7 +48,10 @@ export class ParseState {
     );
   }
 
-  public until(condition: TokenCondition, eatLast: boolean = false): Token[] {
+  public until(
+    condition: TokenCondition,
+    option?: { eatLast?: true; escape?: false }
+  ): Token[] {
     const result: Token[] = [];
     if (!this.hasCurrent()) {
       return result;
@@ -57,14 +60,17 @@ export class ParseState {
     while ((beforeBackslash || condition(this.currentToken)) && this.hasNext) {
       beforeBackslash = false;
       const current = this.currentToken;
-      if (current.type === TokenType.BackSlash) {
+      if (
+        (!option || option.escape !== false) &&
+        current.type === TokenType.BackSlash
+      ) {
         beforeBackslash = true;
         this.cursorNext();
       } else {
         result.push(this.cursorNext());
       }
     }
-    if (eatLast) {
+    if (option && option.eatLast === true) {
       result.push(this.cursorNext());
     }
     return result;

@@ -1,5 +1,5 @@
 import { Renderer } from '../../../api/renderer';
-import { YoutubeBlock } from '../../blockConstructor/youtube.rule';
+import { YoutubeBlock } from '../../block-constructor/youtube.rule';
 import { HtmlPlatform } from '../html-platform';
 
 export const YoutubeRenderer: Renderer<YoutubeBlock, string> = {

@@ -11,8 +11,7 @@ export default function nextNormalText(
     state.until(
       current =>
         current.type !== TokenType.SquareBracketStart &&
-        current.type !== TokenType.LineFeed,
-      false
+        current.type !== TokenType.LineFeed
     )
   );
   return tokens.length > 0

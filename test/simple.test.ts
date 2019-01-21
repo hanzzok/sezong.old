@@ -1,7 +1,7 @@
 import { NodeType } from '../src/api/node';
+import CompilerConfiguration from '../src/core/compiler-configuration';
 import { MessageType } from '../src/core/message';
 import { Parser } from '../src/core/parse/parser';
-import ParserConfiguration from '../src/core/parse/parser-configuration';
 import tokenize from '../src/core/tokenize/tokenizer';
 import { Header1Rule } from '../src/std/block-constructor/header1.rule';
 import { YoutubeRule } from '../src/std/block-constructor/youtube.rule';
@@ -20,7 +20,7 @@ const decorators = [
 ];
 const blockConstructors = [Header1Rule, YoutubeRule];
 
-const configuration = new ParserConfiguration(decorators, blockConstructors);
+const configuration = new CompilerConfiguration(decorators, blockConstructors);
 
 const createParser = (source: string) =>
   new Parser(configuration, tokenize(source));

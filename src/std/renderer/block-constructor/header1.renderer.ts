@@ -1,5 +1,5 @@
 import { Renderer } from '../../../api/renderer';
-import { Header1Block } from '../../blockConstructor/header1.rule';
+import { Header1Block } from '../../block-constructor/header1.rule';
 import { HtmlPlatform } from '../html-platform';
 
 export const Header1Renderer: Renderer<Header1Block, string> = {

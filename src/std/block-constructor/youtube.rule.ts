@@ -6,7 +6,8 @@ export const YoutubeRule: BlockConstructor<YoutubeBlock> = {
     return new YoutubeBlock(requiredInput);
   },
   name: 'youtube',
-  namespace: 'std'
+  namespace: 'std',
+  receiveDocument: false
 };
 
 export class YoutubeBlock implements RenderableBlock {

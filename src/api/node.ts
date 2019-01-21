@@ -1,3 +1,4 @@
+import { BlockOptionalInput } from './optional-input';
 import { Pos } from './pos';
 import { Token } from './token';
 
@@ -21,10 +22,7 @@ export interface DecoratorFunctionData {
 export interface BlockConstructorData {
   readonly name: string;
   readonly requiredInput: string;
-  readonly optionalInput?:
-    | undefined
-    | string
-    | Array<string | [string, string]>;
+  readonly optionalInput?: BlockOptionalInput;
 }
 
 export enum NodeType {

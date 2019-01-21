@@ -1,19 +1,19 @@
 import { Node, NodeType } from '../../api/node';
 import { Token, TokenType } from '../../api/token';
+import CompilerConfiguration from '../compiler-configuration';
 import { Message } from '../message';
 import { nextNormalBlockConstructor } from './functions/block-constructor-normal';
 import { nextSpecialBlockConstructor } from './functions/block-constructor-special';
 import nextDecorator from './functions/decorator';
 import nextNormalText from './functions/normal-text';
-import ParserConfiguration from './parser-configuration';
 import { ParseState } from './parser-state';
 import { Result } from './types';
 
 export class Parser {
   public state: ParseState;
-  private configuration: ParserConfiguration;
+  private configuration: CompilerConfiguration;
 
-  constructor(configuration: ParserConfiguration, tokens: Token[]) {
+  constructor(configuration: CompilerConfiguration, tokens: Token[]) {
     this.configuration = configuration;
     this.state = new ParseState(tokens);
   }
@@ -47,9 +47,8 @@ export class Parser {
     switch (this.state.currentToken.type) {
       case TokenType.NormalText: {
         if (
-          this.configuration.blockConstructorSpecialNames.includes(
-            this.state.currentToken.source
-          )
+          this.state.currentToken.source in
+          this.configuration.blockConstructorSpecialNames
         ) {
           result = nextSpecialBlockConstructor(this.configuration, this.state);
         } else {
