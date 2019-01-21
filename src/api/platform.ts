@@ -1,4 +1,4 @@
-import { Renderable } from './renderable';
+import { NormalText, ParagraphSplitBlock, Renderable } from './renderable';
 import { Renderer } from './renderer';
 export class Platform<Result> {
   public renderers: Set<Renderer<any, Result>> = new Set();
@@ -6,8 +6,21 @@ export class Platform<Result> {
   constructor(
     public readonly name: string,
     private readonly composer: (left: Result, right: Result) => Result,
-    private readonly defaultValue: Result
-  ) {}
+    private readonly defaultValue: Result,
+    renderNormalText: (text: NormalText) => Result,
+    renderParagraphSplit: (paragraphSplit: ParagraphSplitBlock) => Result
+  ) {
+    this.renderers.add({
+      canRender: renderable => renderable instanceof NormalText,
+      platform: this,
+      render: renderNormalText
+    });
+    this.renderers.add({
+      canRender: renderable => renderable instanceof ParagraphSplitBlock,
+      platform: this,
+      render: renderParagraphSplit
+    });
+  }
 
   public render(renderable: Renderable): Result {
     for (const renderer of this.renderers.values()) {
