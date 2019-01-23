@@ -1,11 +1,11 @@
 import { TokenType } from '../../../api/token';
-import CompilerConfiguration from '../../compiler-configuration';
-import { ParseState } from '../parser-state';
+import { CompilerConfiguration } from '../../../core';
+import ParseState from '../parser-state';
 import { Result } from '../types';
-import { nextBlockConstructorTail } from './block-constructor-tail';
+import nextBlockConstructorTail from './block-constructor-tail';
 import nextNormalText from './normal-text';
 
-export function nextSpecialBlockConstructor(
+export default function nextSpecialBlockConstructor(
   configuration: CompilerConfiguration,
   state: ParseState
 ): Result {

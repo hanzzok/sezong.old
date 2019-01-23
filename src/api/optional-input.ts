@@ -1,5 +1,5 @@
-import { Message, MessageType } from '../core/message';
-import { Token } from './token';
+import { Message, MessageType } from '../core';
+import { Token } from './';
 
 // Tokens are required for creating cool quality message.
 export type BlockOptionalInputReal =

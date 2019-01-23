@@ -1,15 +1,13 @@
-import { Node, NodeType } from '../../api/node';
-import { Token, TokenType } from '../../api/token';
-import CompilerConfiguration from '../compiler-configuration';
-import { Message } from '../message';
-import { nextNormalBlockConstructor } from './functions/block-constructor-normal';
-import { nextSpecialBlockConstructor } from './functions/block-constructor-special';
+import { Node, NodeType, Token, TokenType } from '../../api';
+import { CompilerConfiguration, Message } from '../../core';
+import nextNormalBlockConstructor from './functions/block-constructor-normal';
+import nextSpecialBlockConstructor from './functions/block-constructor-special';
 import nextDecorator from './functions/decorator';
 import nextNormalText from './functions/normal-text';
-import { ParseState } from './parser-state';
+import ParseState from './parser-state';
 import { Result } from './types';
 
-export class Parser {
+export default class Parser {
   public state: ParseState;
   private configuration: CompilerConfiguration;
 

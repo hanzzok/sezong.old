@@ -1,5 +1,4 @@
-import { NormalText, ParagraphSplitBlock, Renderable } from './renderable';
-import { Renderer } from './renderer';
+import { NormalText, ParagraphSplitBlock, Renderable, Renderer } from './';
 export class Platform<Result> {
   public renderers: Set<Renderer<any, Result>> = new Set();
 

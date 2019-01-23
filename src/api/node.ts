@@ -1,6 +1,4 @@
-import { BlockOptionalInput } from './optional-input';
-import { Pos } from './pos';
-import { Token } from './token';
+import { BlockOptionalInput, Pos, Token } from './';
 
 export interface Node {
   readonly pos: Pos;

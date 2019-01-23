@@ -2,19 +2,15 @@ import {
   BlockConstructorData,
   DecoratorData,
   Node,
-  NodeType
-} from '../../api/node';
-import { Platform } from '../../api/platform';
-import {
+  NodeType,
   NormalText,
   ParagraphSplitBlock,
   Renderable,
   RenderableInline
-} from '../../api/renderable';
-import CompilerConfiguration from '../compiler-configuration';
-import { Message } from '../message';
+} from '../../api';
+import { CompilerConfiguration, Message } from '../../core';
 
-export function link(
+export default function link(
   configuration: CompilerConfiguration,
   nodes: Node[]
 ): [Renderable[], Message[]] {
@@ -79,12 +75,4 @@ export function link(
       }) as Renderable[],
     messages
   ];
-}
-
-export function render<T>(platform: Platform<T>, renderables: Renderable[]): T {
-  return platform.compose(
-    renderables.map(renderable => {
-      return platform.render(renderable);
-    })
-  );
 }

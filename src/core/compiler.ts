@@ -1,24 +1,24 @@
-import { Node } from '../api/node';
-import { Platform } from '../api/platform';
-import {
-  Renderable,
-  RenderableBlock,
-  RenderableInline
-} from '../api/renderable';
-import { Renderer } from '../api/renderer';
 import {
   AnyBlockConstructor,
   AnyDecorator,
   BlockConstructor,
-  Decorator
-} from '../api/rule';
-import { Token } from '../api/token';
-import CompilerConfiguration from './compiler-configuration';
-import { link, render } from './link/linker';
-import { Message } from './message';
-import { Parser } from './parse/parser';
-import tokenize from './tokenize/tokenizer';
-import { parse } from 'url';
+  Decorator,
+  Node,
+  Platform,
+  Renderable,
+  RenderableBlock,
+  RenderableInline,
+  Renderer,
+  Token
+} from '../api';
+import {
+  CompilerConfiguration,
+  link,
+  Message,
+  Parser,
+  render,
+  tokenize
+} from '../core';
 
 export default class Compiler<ResultType> {
   private modified = false;

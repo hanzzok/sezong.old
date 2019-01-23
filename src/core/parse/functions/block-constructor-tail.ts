@@ -1,13 +1,14 @@
-import { NodeType } from '../../../api/node';
 import {
   BlockOptionalInput,
-  ObjectBlockOptionalInput
-} from '../../../api/optional-input';
-import { Token, TokenType } from '../../../api/token';
-import { ParseState } from '../parser-state';
+  NodeType,
+  ObjectBlockOptionalInput,
+  Token,
+  TokenType
+} from '../../../api';
+import ParseState from '../parser-state';
 import { Result } from '../types';
 
-export function nextBlockConstructorTail(
+export default function nextBlockConstructorTail(
   tokens: Token[],
   receiveDocument: boolean,
   state: ParseState

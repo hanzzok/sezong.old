@@ -1,5 +1,4 @@
-import { Platform } from './platform';
-import { Renderable } from './renderable';
+import { Platform, Renderable } from './';
 
 export interface Renderer<RenderTarget extends Renderable, Result> {
   readonly platform: Platform<Result>;

@@ -1,8 +1,6 @@
-import { NodeType } from '../../../api/node';
-import { Token, TokenType } from '../../../api/token';
-import CompilerConfiguration from '../../compiler-configuration';
-import { Message, MessageType } from '../../message';
-import { ParseState } from '../parser-state';
+import { NodeType, Token, TokenType } from '../../../api';
+import { CompilerConfiguration, Message, MessageType } from '../../../core';
+import ParseState from '../parser-state';
 import { Result } from '../types';
 import nextNormalText from './normal-text';
 

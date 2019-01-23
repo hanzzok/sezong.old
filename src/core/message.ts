@@ -1,4 +1,4 @@
-import { Token } from '../api/token';
+import { Token } from '../api';
 
 export class Message {
   public readonly type: MessageType;

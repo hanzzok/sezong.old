@@ -1,6 +1,6 @@
-import { AnyBlockConstructor, AnyDecorator } from '../api/rule';
-import { Regex } from '../util';
+import { AnyBlockConstructor, AnyDecorator } from '../api';
 
+const SpecialChars = /[`~!@#\$%\^&\*\(\)-_=\+\\;:'",<.>/?]/;
 export default class CompilerConfiguration {
   public readonly decorators: AnyDecorator[];
   public readonly blockConstructors: AnyBlockConstructor[];
@@ -22,7 +22,7 @@ export default class CompilerConfiguration {
 
     this.decoratorNames = decorators.map(it => it.name);
     for (const blockConstructor of blockConstructors) {
-      if (Regex.SpecialCharacter.test(blockConstructor.name[0])) {
+      if (SpecialChars.test(blockConstructor.name[0])) {
         this.blockConstructorSpecialNames[
           blockConstructor.name
         ] = blockConstructor;

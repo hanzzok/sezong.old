@@ -1,8 +1,8 @@
-import { Token, TokenType } from '../../api/token';
-import { Message } from '../message';
+import { Token, TokenType } from '../../api';
+import { Message } from '../../core';
 import { TokenCondition } from './types';
 
-export class ParseState {
+export default class ParseState {
   public readonly tokens: Token[];
   public readonly messages: Message[] = [];
   private index: number = 0;

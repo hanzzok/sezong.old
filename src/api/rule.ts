@@ -1,6 +1,10 @@
-import { Message } from '../core/message';
-import { BlockOptionalInput } from './optional-input';
-import { Renderable, RenderableBlock, RenderableInline } from './renderable';
+import { Message } from '../core';
+import {
+  BlockOptionalInput,
+  Renderable,
+  RenderableBlock,
+  RenderableInline
+} from './';
 
 export interface Rule<RequiredInput, OptionalInput, Result extends Renderable> {
   readonly namespace: string;
