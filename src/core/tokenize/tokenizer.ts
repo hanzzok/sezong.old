@@ -37,6 +37,7 @@ export default function tokenize(
       }
       beforeWhitespace = true;
       cache.append(char);
+      state.next();
       continue;
     } else if (beforeWhitespace) {
       cache.appendTokenTo(tokens, TokenType.WhiteSpace);
