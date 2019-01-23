@@ -9,13 +9,13 @@
     "compiler"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/RanolP/sezong",
+  "homepage": "https://github.com/langsezong/sezong",
   "repository": {
     "type": "git",
-    "url": "https://github.com/RanolP/sezong.git"
+    "url": "https://github.com/langsezong/sezong.git"
   },
   "bugs": {
-    "url": "https://github.com/RanolP/sezong/issues"
+    "url": "https://github.com/langsezong/sezong/issues"
   },
   "author": {
     "name": "RanolP",
