@@ -1,14 +1,15 @@
 language: node_js
 node_js:
-  - '10'
+- '10'
 notifications:
   email: false
-  slack: $SLACK_TOKEN
+  slack:
+    secure: qp+JjTnvqp+DV1DqHL5qnu6ZWOukVuXU5oA9N2sHj3LhaLVE+ZWu0QfjZwYRyAuityB19OfTNMU3Vc0yQNCvhsOaTSjG/C6uI7wXkHL5DyTPzPJeFrbMIMoqTLjrZW01+/WQ0cyOUUOiONCu06LOTWcXkzy4h5fUVlH2+tIEU9j3s8qeqlLvE1m0ld9kwOvq0xPzoyJm6Jc0L8FXqYMH8e3ilysQoNWu4q/RQoHDpdGhwyUKDL/ct+wnwe0zTpXeFDvrJuA+Bjsr5jhk3Z46RSdzoj6Ao83NZzRrkbNDIrcbK+Mp/QIY4kBLNxYAzMnMR6kW9bpTHYyRC7Tylna2ewo8fVo0uV/jnCIYFfK4zgI1GYNewvFocqoeTuhFeczRfJD3U5aMvnAsfrT4gf1ZLHdFmCFfh3HVZR8O82l51qBMXxpGo3MaVLNRZm7/GHoh/4ozZYf3pXRCri2qJFaKVe2PQkZplx3VBLjYdtBpM2KziWJcjxkdFUROnhrj6D3d8bpxY4MKu3PWvu1WNjiOakaGgoRGPevLcH3vCJHoLDEF3wf5mXr9mEa/WqLG70lyCdEx+qjGAORwj0LzshXUWJjFTGpEjKYD2AMAJ5tydpwbDAnzvMxCr/istFvpHohAEN3xFyZM7xULpcHnJcs41eOoDD78Rd/PHmMKKRMz4XQ=
 install:
-  - yarn
+- yarn
 script:
-  - commitlint-travis
-  - yarn global add codecov
-  - yarn test
+- commitlint-travis
+- yarn global add codecov
+- yarn test
 after_success:
-  - codecov -f coverage/clover.xml
+- codecov -f coverage/clover.xml
