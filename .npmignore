@@ -1,0 +1,18 @@
+# Test Files
+test/
+jest.config.js
+
+# Lint
+.prettierrc.json
+.commitlintrc.json
+.huskyrc.json
+tslint.json
+
+# TypeScript
+tsconfig.json
+
+# Original Source
+src/
+
+# CI
+.travis.yml
