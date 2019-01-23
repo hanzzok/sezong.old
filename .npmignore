@@ -16,3 +16,12 @@ src/
 
 # CI
 .travis.yml
+
+# Yarn
+yarn-debug.log*
+yarn-error.log*
+.yarn-integrity
+yarn.lock
+
+# GitHub
+.github/
