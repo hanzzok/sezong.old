@@ -1,3 +1,4 @@
+import { Message } from '../core/message';
 import { BlockOptionalInput } from './optional-input';
 import { Renderable, RenderableBlock, RenderableInline } from './renderable';
 
@@ -5,7 +6,11 @@ export interface Rule<RequiredInput, OptionalInput, Result extends Renderable> {
   readonly namespace: string;
   readonly name: string;
 
-  compile(requiredInput: RequiredInput, optionalInput: OptionalInput): Result;
+  compile(
+    requiredInput: RequiredInput,
+    optionalInput: OptionalInput,
+    messages: Message[]
+  ): Result | Message;
 }
 
 export interface BlockConstructor<Result extends RenderableBlock>

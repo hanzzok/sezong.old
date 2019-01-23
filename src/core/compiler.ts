@@ -18,6 +18,7 @@ import { link, render } from './link/linker';
 import { Message } from './message';
 import { Parser } from './parse/parser';
 import tokenize from './tokenize/tokenizer';
+import { parse } from 'url';
 
 export default class Compiler<ResultType> {
   private modified = false;
@@ -57,12 +58,23 @@ export default class Compiler<ResultType> {
     return [parser.parse(), parser.state.messages];
   }
 
-  public link(nodes: Node[]): Renderable[] {
+  public link(nodes: Node[]): [Renderable[], Message[]] {
     return link(this.updateConfiguration(), nodes);
   }
 
-  public render(renderables: Renderable[]) {
+  public render(renderables: Renderable[]): ResultType {
     return render(this.platform, renderables);
+  }
+
+  public compile(
+    source: string | TemplateStringsArray
+  ): [ResultType, Message[]] {
+    const tokens = this.tokenize(source);
+    const [nodes, parseMessages] = this.parse(tokens);
+    const [renderables, linkMessages] = this.link(nodes);
+    const rendered = this.render(renderables);
+
+    return [rendered, parseMessages.concat(linkMessages)];
   }
 
   private updateConfiguration(): CompilerConfiguration {

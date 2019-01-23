@@ -1,5 +1,8 @@
 import { NodeType } from '../../../api/node';
-import { BlockOptionalInput } from '../../../api/optional-input';
+import {
+  BlockOptionalInput,
+  ObjectBlockOptionalInput
+} from '../../../api/optional-input';
 import { Token, TokenType } from '../../../api/token';
 import { ParseState } from '../parser-state';
 import { Result } from '../types';
@@ -19,6 +22,7 @@ export function nextBlockConstructorTail(
   tokens.push.apply(tokens, requiredInput);
 
   const [optionalInputTokens, data] = nextBlockConstructorOptionalInput(
+    tokens,
     receiveDocument,
     state
   );
@@ -41,11 +45,12 @@ export function nextBlockConstructorTail(
 }
 
 function nextBlockConstructorOptionalInput(
+  parentTokens: Token[],
   receiveDocument: boolean,
   state: ParseState
 ): [Token[], BlockOptionalInput] {
   if (!state.hasCurrent(TokenType.CurlyBracketStart)) {
-    return [[], undefined];
+    return [[], { tokens: parentTokens, value: undefined }];
   }
   const tokens = [state.cursorNext()];
 
@@ -65,7 +70,15 @@ function nextBlockConstructorOptionalInput(
         escape: false
       }
     );
-    return [tokens.concat(document), document.map(it => it.source).join('')];
+    tokens.push.apply(tokens, document);
+    tokens.push(state.cursorNext());
+    return [
+      tokens,
+      {
+        tokens,
+        value: document.map(it => it.source).join('')
+      }
+    ];
   }
 
   const nextData = () =>
@@ -83,20 +96,22 @@ function nextBlockConstructorOptionalInput(
     });
   let data = nextData();
   let assignState: null | Token[] = null;
-  const result: {
-    [key: string]: string;
-  } = {};
+  const value: ObjectBlockOptionalInput = {};
   const process = () => {
     if (assignState !== data && assignState) {
-      result[
+      value[
         assignState
           .map(it => it.source)
           .join('')
           .trim()
-      ] = data
-        .map(it => it.source)
-        .join('')
-        .trim();
+      ] = {
+        keyTokens: assignState,
+        real: data
+          .map(it => it.source)
+          .join('')
+          .trim(),
+        valueTokens: data
+      };
       assignState = null;
     } else if (
       data.length > 0 &&
@@ -130,5 +145,5 @@ function nextBlockConstructorOptionalInput(
 
   tokens.push(state.cursorNext());
 
-  return [tokens, result];
+  return [tokens, { tokens, value }];
 }

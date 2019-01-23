@@ -22,7 +22,7 @@ export interface DecoratorFunctionData {
 export interface BlockConstructorData {
   readonly name: string;
   readonly requiredInput: string;
-  readonly optionalInput?: BlockOptionalInput;
+  readonly optionalInput: BlockOptionalInput;
 }
 
 export enum NodeType {
