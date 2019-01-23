@@ -1,10 +1,7 @@
-import Compiler from './compiler';
-import CompilerConfiguration from './compiler-configuration';
-import link from './link/linker';
-import render from './link/renderer';
-import Parser from './parse/parser';
-import tokenize from './tokenize/tokenizer';
-
+export { default as Compiler } from './compiler';
+export { default as CompilerConfiguration } from './compiler-configuration';
+export { default as link } from './link/linker';
+export { default as render } from './link/renderer';
+export { default as Parser } from './parse/parser';
+export { default as tokenize } from './tokenize/tokenizer';
 export * from './message';
-
-export { Compiler, CompilerConfiguration, link, Parser, render, tokenize };
