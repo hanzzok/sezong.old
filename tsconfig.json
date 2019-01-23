@@ -19,5 +19,6 @@
     "esModuleInterop": true,
     "downlevelIteration": true,
     "sourceMap": true
-  }
+  },
+  "include": ["src"]
 }
