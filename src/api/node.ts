@@ -1,4 +1,5 @@
-import { BlockOptionalInput, Pos, Token } from './';
+import { Pos, Token } from './';
+import { Configuration } from './configuration';
 
 export interface Node {
   readonly pos: Pos;
@@ -19,8 +20,9 @@ export interface DecoratorFunctionData {
 
 export interface BlockConstructorData {
   readonly name: string;
-  readonly requiredInput: string;
-  readonly optionalInput: BlockOptionalInput;
+  readonly primaryInput: string;
+  readonly configuration: Configuration | undefined;
+  readonly document: string | undefined;
 }
 
 export enum NodeType {

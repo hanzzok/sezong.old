@@ -22,10 +22,5 @@ export default function nextNormalBlockConstructor(
   }
   tokens.push(state.cursorNext());
 
-  return nextBlockConstructorTail(
-    tokens,
-    configuration.blockConstructorNormalNames[tokens.slice(-1)[0].source]
-      .receiveDocument,
-    state
-  );
+  return nextBlockConstructorTail(tokens, state);
 }

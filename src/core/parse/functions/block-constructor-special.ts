@@ -16,11 +16,5 @@ export default function nextSpecialBlockConstructor(
     return nextNormalText(state);
   }
 
-  const name = state.currentToken.source;
-
-  return nextBlockConstructorTail(
-    [state.cursorNext()],
-    configuration.blockConstructorSpecialNames[name].receiveDocument,
-    state
-  );
+  return nextBlockConstructorTail([state.cursorNext()], state);
 }

@@ -1,6 +1,7 @@
 # Test Files
 test/
 jest.config.js
+coverage/
 
 # Lint
 .prettierrc.json

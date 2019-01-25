@@ -1,13 +1,12 @@
 import { NormalText, ParagraphSplitBlock, Renderable, Renderer } from './';
-export class Platform<Result> {
-  public renderers: Set<Renderer<any, Result>> = new Set();
+export class Platform<Result, MidResult = Result> {
+  public renderers: Set<Renderer<any, MidResult>> = new Set();
 
   constructor(
     public readonly name: string,
-    private readonly composer: (left: Result, right: Result) => Result,
-    private readonly defaultValue: Result,
-    renderNormalText: (text: NormalText) => Result,
-    renderParagraphSplit: (paragraphSplit: ParagraphSplitBlock) => Result
+    public readonly compose: (midResults: MidResult[]) => Result,
+    renderNormalText: (text: NormalText) => MidResult,
+    renderParagraphSplit: (paragraphSplit: ParagraphSplitBlock) => MidResult
   ) {
     this.renderers.add({
       canRender: renderable => renderable instanceof NormalText,
@@ -21,7 +20,7 @@ export class Platform<Result> {
     });
   }
 
-  public render(renderable: Renderable): Result {
+  public render(renderable: Renderable): MidResult {
     for (const renderer of this.renderers.values()) {
       if (renderer.canRender(renderable)) {
         return renderer.render(renderable);
@@ -33,7 +32,12 @@ export class Platform<Result> {
     );
   }
 
-  public compose(array: Result[]): Result {
-    return array.reduce(this.composer, this.defaultValue);
+  public renderAll(renderables: Renderable[]): Result {
+    const results: MidResult[] = [];
+    for (const renderable of renderables) {
+      results.push(this.render(renderable));
+    }
+
+    return this.compose(results);
   }
 }

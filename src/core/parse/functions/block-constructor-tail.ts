@@ -1,40 +1,35 @@
-import {
-  BlockOptionalInput,
-  NodeType,
-  ObjectBlockOptionalInput,
-  Token,
-  TokenType
-} from '../../../api';
+import { Configuration, NodeType, Token, TokenType } from '../../../api';
 import ParseState from '../parser-state';
 import { Result } from '../types';
 
 export default function nextBlockConstructorTail(
   tokens: Token[],
-  receiveDocument: boolean,
   state: ParseState
 ): Result {
   const name = tokens.slice(-1)[0];
-  tokens.push.apply(tokens, state.skipWhitespace());
-  const requiredInput = state.until(
+  tokens.push(...state.skipWhitespace());
+
+  const primaryInput = state.until(
     (token: Token) =>
       token.type !== TokenType.LineFeed &&
-      token.type !== TokenType.CurlyBracketStart
-  );
-  tokens.push.apply(tokens, requiredInput);
-
-  const [optionalInputTokens, data] = nextBlockConstructorOptionalInput(
-    tokens,
-    receiveDocument,
-    state
+      token.type !== TokenType.CurlyBracketStart &&
+      token.type !== TokenType.DoubleAngleBracketEnd
   );
 
-  tokens.push.apply(tokens, optionalInputTokens);
+  const [
+    optionalInputTokens,
+    configuration,
+    document
+  ] = nextBlockConstructorOptionalInput(state);
+
+  tokens.push(...optionalInputTokens);
 
   return {
     data: {
+      configuration,
+      document,
       name: name.source,
-      optionalInput: data,
-      requiredInput: requiredInput
+      primaryInput: primaryInput
         .map(it => it.source)
         .join('')
         .trim()
@@ -46,41 +41,40 @@ export default function nextBlockConstructorTail(
 }
 
 function nextBlockConstructorOptionalInput(
-  parentTokens: Token[],
-  receiveDocument: boolean,
   state: ParseState
-): [Token[], BlockOptionalInput] {
-  if (!state.hasCurrent(TokenType.CurlyBracketStart)) {
-    return [[], { tokens: parentTokens, value: undefined }];
+): [Token[], Configuration | undefined, string | undefined] {
+  if (
+    !state.hasCurrent(TokenType.CurlyBracketStart) &&
+    !state.hasCurrent(TokenType.DoubleAngleBracketEnd)
+  ) {
+    return [[], undefined, undefined];
   }
-  const tokens = [state.cursorNext()];
 
-  let curly = 1;
+  const tokens = [];
 
-  if (receiveDocument) {
-    const document = state.until(
-      token => {
-        if (token.type === TokenType.CurlyBracketStart) {
-          curly++;
-        } else if (token.type === TokenType.CurlyBracketEnd) {
-          curly--;
-        }
-        return curly !== 0;
-      },
-      {
-        escape: false
-      }
-    );
-    tokens.push.apply(tokens, document);
+  tokens.push(...state.skipWhitespace());
+
+  let configuration: Configuration | undefined;
+  if (state.hasCurrent(TokenType.CurlyBracketStart)) {
     tokens.push(state.cursorNext());
-    return [
-      tokens,
-      {
-        tokens,
-        value: document.map(it => it.source).join('')
-      }
-    ];
+    configuration = nextConfiguration(tokens, state);
+    tokens.push(...state.skipWhitespace());
   }
+
+  let document: string | undefined;
+  if (state.hasCurrent(TokenType.DoubleAngleBracketEnd)) {
+    tokens.push(state.cursorNext());
+    document = nextDocument(tokens, state);
+  }
+
+  return [tokens, configuration, document];
+}
+
+function nextConfiguration(
+  tokens: Token[],
+  state: ParseState
+): Configuration | undefined {
+  let curly = 1;
 
   const nextData = () =>
     state.until(token => {
@@ -97,7 +91,7 @@ function nextBlockConstructorOptionalInput(
     });
   let data = nextData();
   let assignState: null | Token[] = null;
-  const value: ObjectBlockOptionalInput = {};
+  const value: Configuration = {};
   const process = () => {
     if (assignState !== data && assignState) {
       value[
@@ -129,7 +123,7 @@ function nextBlockConstructorOptionalInput(
     state.hasCurrent(TokenType.Comma) ||
     state.hasCurrent(TokenType.Assign)
   ) {
-    tokens.push.apply(tokens, data);
+    tokens.push(...data);
 
     if (state.hasCurrent(TokenType.Comma)) {
       process();
@@ -141,10 +135,34 @@ function nextBlockConstructorOptionalInput(
     data = nextData();
   }
 
-  tokens.push.apply(tokens, data);
+  tokens.push(...data);
   process();
 
   tokens.push(state.cursorNext());
 
-  return [tokens, { tokens, value }];
+  return value;
+}
+
+function nextDocument(tokens: Token[], state: ParseState): string {
+  let angle = 1;
+  const documentTokens = state.until(
+    token => {
+      if (token.type === TokenType.DoubleAngleBracketEnd) {
+        angle++;
+      } else if (token.type === TokenType.DoubleAngleBracketStart) {
+        angle--;
+      }
+      return angle !== 0;
+    },
+    {
+      escape: false
+    }
+  );
+  tokens.push(...documentTokens);
+  tokens.push(state.cursorNext());
+
+  return documentTokens
+    .slice(0, -1)
+    .map(it => it.source)
+    .join('');
 }

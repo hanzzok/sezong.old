@@ -56,21 +56,28 @@ export default class ParseState {
     if (!this.hasCurrent()) {
       return result;
     }
-    let beforeBackslash;
-    while ((beforeBackslash || condition(this.currentToken)) && this.hasNext) {
-      beforeBackslash = false;
+    let beforeBackslash: Token | undefined;
+    while (
+      this.hasCurrent() &&
+      ((beforeBackslash && (!option || option.escape !== false)) ||
+        condition(this.currentToken))
+    ) {
+      beforeBackslash = undefined;
       const current = this.currentToken;
       if (
         (!option || option.escape !== false) &&
         current.type === TokenType.BackSlash
       ) {
-        beforeBackslash = true;
+        beforeBackslash = this.currentToken;
         this.cursorNext();
       } else {
         result.push(this.cursorNext());
       }
     }
-    if (option && option.eatLast === true) {
+    if (beforeBackslash) {
+      result.push(beforeBackslash);
+    }
+    if (option && option.eatLast === true && this.hasCurrent) {
       result.push(this.cursorNext());
     }
     return result;

@@ -34,8 +34,11 @@ export default function link(
             );
             if (rule) {
               return rule.compile(
-                data.requiredInput,
-                data.optionalInput,
+                data.primaryInput,
+                {
+                  configuration: data.configuration,
+                  document: data.document
+                },
                 messages
               );
             } else {

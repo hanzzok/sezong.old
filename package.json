@@ -1,7 +1,7 @@
 {
   "name": "sezong",
   "description": "Programming Markup Language",
-  "version": "0.1.2",
+  "version": "0.3.1",
   "keywords": [
     "markup",
     "language",
@@ -27,7 +27,9 @@
   "scripts": {
     "test": "jest"
   },
-  "dependencies": {},
+  "dependencies": {
+    "fast-check": "^1.10.0"
+  },
   "devDependencies": {
     "@commitlint/cli": "^7.3.2",
     "@commitlint/config-conventional": "^7.3.1",

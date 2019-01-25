@@ -27,6 +27,9 @@ export enum TokenType {
   RoundBracketStart = 'RoundBracketStart',
   RoundBracketEnd = 'RoundBracketEnd',
 
+  DoubleAngleBracketStart = 'DoubleAngleBracketStart',
+  DoubleAngleBracketEnd = 'DoubleAngleBracketEnd',
+
   BackSlash = 'BackSlash',
   LineFeed = 'LineFeed',
   SingleQuote = 'SingleQuote',

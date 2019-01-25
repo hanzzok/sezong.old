@@ -1,5 +1,5 @@
 export * from './node';
-export * from './optional-input';
+export * from './configuration';
 export * from './platform';
 export * from './pos';
 export * from './renderable';

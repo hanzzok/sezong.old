@@ -1,8 +1,10 @@
 import { Platform, Renderable } from './';
 
-export interface Renderer<RenderTarget extends Renderable, Result> {
-  readonly platform: Platform<Result>;
+export interface Renderer<RenderTarget extends Renderable, MidResult> {
+  readonly platform: Platform<any, MidResult>;
 
   canRender(target: Renderable): boolean;
-  render(target: RenderTarget): Result;
+  render(target: RenderTarget): MidResult;
 }
+
+export type AnyRenderer = Renderer<Renderable, any>;

@@ -19,8 +19,9 @@ import {
   render,
   tokenize
 } from '../core';
+import { renderAll } from './link/renderer';
 
-export default class Compiler<ResultType> {
+export default class Compiler<ResultType, MidResultType> {
   private modified = false;
   private decorators = new Set<AnyDecorator>();
   private blockConstructors = new Set<AnyBlockConstructor>();
@@ -29,11 +30,11 @@ export default class Compiler<ResultType> {
     [...this.blockConstructors]
   );
 
-  constructor(private readonly platform: Platform<ResultType>) {}
+  constructor(private readonly platform: Platform<ResultType, MidResultType>) {}
 
   public addDecorator<RenderableType extends RenderableInline>(
     rule: Decorator<RenderableType>,
-    renderer: Renderer<RenderableType, ResultType>
+    renderer: Renderer<RenderableType, MidResultType>
   ) {
     this.decorators.add(rule);
     this.platform.renderers.add(renderer);
@@ -42,7 +43,7 @@ export default class Compiler<ResultType> {
 
   public addBlockConstructor<RenderableType extends RenderableBlock>(
     rule: BlockConstructor<RenderableType>,
-    renderer: Renderer<RenderableType, ResultType>
+    renderer: Renderer<RenderableType, MidResultType>
   ) {
     this.blockConstructors.add(rule);
     this.platform.renderers.add(renderer);
@@ -62,8 +63,12 @@ export default class Compiler<ResultType> {
     return link(this.updateConfiguration(), nodes);
   }
 
-  public render(renderables: Renderable[]): ResultType {
+  public render(renderables: Renderable[]): MidResultType[] {
     return render(this.platform, renderables);
+  }
+
+  public renderAll(renderables: Renderable[]): ResultType {
+    return renderAll(this.platform, renderables);
   }
 
   public compile(
@@ -72,7 +77,7 @@ export default class Compiler<ResultType> {
     const tokens = this.tokenize(source);
     const [nodes, parseMessages] = this.parse(tokens);
     const [renderables, linkMessages] = this.link(nodes);
-    const rendered = this.render(renderables);
+    const rendered = this.renderAll(renderables);
 
     return [rendered, parseMessages.concat(linkMessages)];
   }

@@ -1,12 +1,15 @@
 import { Platform, Renderable } from '../../api';
 
-export default function render<T>(
-  platform: Platform<T>,
+export function render<T>(
+  platform: Platform<any, T>,
+  renderables: Renderable[]
+): T[] {
+  return renderables.map(renderable => platform.render(renderable));
+}
+
+export function renderAll<T>(
+  platform: Platform<T, any>,
   renderables: Renderable[]
 ): T {
-  return platform.compose(
-    renderables.map(renderable => {
-      return platform.render(renderable);
-    })
-  );
+  return platform.compose(render(platform, renderables));
 }
