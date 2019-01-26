@@ -39,7 +39,8 @@ export default function link(
                   configuration: data.configuration,
                   document: data.document
                 },
-                messages
+                messages,
+                node.tokens
               );
             } else {
               return new NormalText(node.tokens.map(it => it.source).join(''));
@@ -47,7 +48,7 @@ export default function link(
           }
           case NodeType.Decorator: {
             const data = node.data as DecoratorData;
-            let value: RenderableInline = new NormalText(data.input);
+            let value: RenderableInline = new NormalText(data.input[0]);
 
             for (const fun of data.functions) {
               const rule = configuration.decorators.find(
@@ -57,9 +58,10 @@ export default function link(
               );
               if (rule && !(value.isEmpty && rule.reduceIfTextEmpty)) {
                 const result = rule.compile(
-                  [value, node.tokens],
+                  [value, data.input[1]],
                   fun.parameters,
-                  messages
+                  messages,
+                  node.tokens
                 );
                 if (result instanceof Message) {
                   return result;

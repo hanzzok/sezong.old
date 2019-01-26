@@ -132,10 +132,13 @@ export default function nextDecorator(
   return {
     data: {
       functions,
-      input: text
-        .map(it => it.source)
-        .join('')
-        .trim()
+      input: [
+        text
+          .map(it => it.source)
+          .join('')
+          .trim(),
+        text
+      ]
     },
     pos: tokens[0].pos,
     tokens,

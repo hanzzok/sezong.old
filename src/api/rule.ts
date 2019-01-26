@@ -18,7 +18,8 @@ export interface Rule<
   compile(
     primaryInput: [PrimaryInput, Token[]],
     optionalInput: ExtraConfiguration | undefined,
-    messages: Message[]
+    messages: Message[],
+    wholeTokens: Token[]
   ): Result | Message;
 }
 

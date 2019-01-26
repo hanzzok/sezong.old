@@ -10,7 +10,7 @@ export interface Node {
 }
 
 export interface DecoratorData {
-  readonly input: string;
+  readonly input: [string, Token[]];
   readonly functions: DecoratorFunctionData[];
 }
 export interface DecoratorFunctionData {
