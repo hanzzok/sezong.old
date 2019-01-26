@@ -12,12 +12,15 @@ export interface ConfigurationValue {
 }
 
 export function validateKeys(
-  input: Configuration,
+  config: Configuration | undefined,
   knownKeys: string[],
   message: (key: string) => string = key => `Key '${key}' is unused key`
 ): Message[] {
   const result: Message[] = [];
-  for (const key of Object.keys(input)) {
+  if (!config) {
+    return result;
+  }
+  for (const key of Object.keys(config)) {
     if (knownKeys.includes(key)) {
       continue;
     }
@@ -25,15 +28,15 @@ export function validateKeys(
       new Message(
         MessageType.Informal,
         message(key),
-        input[key].keyTokens[0],
-        input[key].keyTokens.slice(-1)[0]
+        config[key].keyTokens[0],
+        config[key].keyTokens.slice(-1)[0]
       )
     );
   }
   return result;
 }
 
-export function asJsObject(config: Configuration | undefined): undefined | any {
+export function asJsObject(config: Configuration | undefined): any | undefined {
   if (!config) {
     return undefined;
   }
@@ -42,4 +45,11 @@ export function asJsObject(config: Configuration | undefined): undefined | any {
     result[key] = config[key].real;
   }
   return result;
+}
+
+export function getIfExists(
+  config: Configuration | undefined,
+  key: string
+): string | undefined {
+  return config && config[key] && config[key].real;
 }
