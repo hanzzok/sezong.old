@@ -34,7 +34,7 @@ describe('block constructors', () => {
     expect(node!.type).toBe(NodeType.BlockConstructor);
 
     expect(data).not.toBe(null);
-    expect(data.primaryInput).toBe('');
+    expect(data.primaryInput[0]).toBe('');
     expect(data.configuration).toBeUndefined();
     expect(data.document).toBeUndefined();
 
@@ -50,7 +50,7 @@ describe('block constructors', () => {
     expect(node!.type).toBe(NodeType.BlockConstructor);
 
     expect(data).not.toBe(null);
-    expect(data.primaryInput).toBe('Heading');
+    expect(data.primaryInput[0]).toBe('Heading');
     expect(data.configuration).toBeUndefined();
     expect(data.document).toBeUndefined();
 
@@ -66,7 +66,7 @@ describe('block constructors', () => {
     expect(node!.type).toBe(NodeType.BlockConstructor);
 
     expect(data).not.toBe(null);
-    expect(data.primaryInput).toBe('Heading');
+    expect(data.primaryInput[0]).toBe('Heading');
     expect(asJsObject(data.configuration)).toEqual({
       anchor: 'IsOrderHeading'
     });
@@ -84,7 +84,7 @@ describe('block constructors', () => {
     expect(node!.type).toBe(NodeType.BlockConstructor);
 
     expect(data).not.toBe(null);
-    expect(data.primaryInput).toBe('Heading');
+    expect(data.primaryInput[0]).toBe('Heading');
     expect(asJsObject(data.configuration)).toEqual({
       anchor: 'IsOrderHeading'
     });
@@ -102,7 +102,7 @@ describe('block constructors', () => {
     expect(node!.type).toBe(NodeType.BlockConstructor);
 
     expect(data).not.toBe(null);
-    expect(data.primaryInput).toBe('Heading');
+    expect(data.primaryInput[0]).toBe('Heading');
     expect(data.configuration).toBeUndefined();
     expect(data.document).toBe(' Document ');
 
@@ -118,7 +118,7 @@ describe('block constructors', () => {
     expect(node!.type).toBe(NodeType.BlockConstructor);
 
     expect(data).not.toBe(null);
-    expect(data.primaryInput).toBe('');
+    expect(data.primaryInput[0]).toBe('');
     expect(data.configuration).toBeUndefined();
     expect(data.document).toBe(' Document ');
 

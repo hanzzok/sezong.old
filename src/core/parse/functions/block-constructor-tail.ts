@@ -29,10 +29,13 @@ export default function nextBlockConstructorTail(
       configuration,
       document,
       name: name.source,
-      primaryInput: primaryInput
-        .map(it => it.source)
-        .join('')
-        .trim()
+      primaryInput: [
+        primaryInput
+          .map(it => it.source)
+          .join('')
+          .trim(),
+        primaryInput
+      ]
     },
     pos: tokens[0].pos,
     tokens,

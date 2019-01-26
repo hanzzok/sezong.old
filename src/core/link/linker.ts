@@ -56,7 +56,11 @@ export default function link(
                   `${it.namespace}:${it.name}` === fun.name
               );
               if (rule && !(value.isEmpty && rule.reduceIfTextEmpty)) {
-                const result = rule.compile(value, fun.parameters, messages);
+                const result = rule.compile(
+                  [value, node.tokens],
+                  fun.parameters,
+                  messages
+                );
                 if (result instanceof Message) {
                   return result;
                 }

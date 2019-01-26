@@ -20,7 +20,7 @@ export interface DecoratorFunctionData {
 
 export interface BlockConstructorData {
   readonly name: string;
-  readonly primaryInput: string;
+  readonly primaryInput: [string, Token[]];
   readonly configuration: Configuration | undefined;
   readonly document: string | undefined;
 }

@@ -5,6 +5,7 @@ import {
   RenderableBlock,
   RenderableInline
 } from './';
+import { Token } from './token';
 
 export interface Rule<
   PrimaryInput,
@@ -15,7 +16,7 @@ export interface Rule<
   readonly name: string;
 
   compile(
-    requiredInput: PrimaryInput,
+    primaryInput: [PrimaryInput, Token[]],
     optionalInput: ExtraConfiguration | undefined,
     messages: Message[]
   ): Result | Message;
