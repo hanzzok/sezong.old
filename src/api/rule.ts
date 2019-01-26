@@ -7,7 +7,7 @@ import {
 } from './';
 
 export interface Rule<
-  RequiredInput,
+  PrimaryInput,
   ExtraConfiguration,
   Result extends Renderable
 > {
@@ -15,7 +15,7 @@ export interface Rule<
   readonly name: string;
 
   compile(
-    requiredInput: RequiredInput,
+    requiredInput: PrimaryInput,
     optionalInput: ExtraConfiguration | undefined,
     messages: Message[]
   ): Result | Message;
@@ -29,9 +29,7 @@ export interface BlockConstructor<Result extends RenderableBlock>
       document: string | undefined;
     },
     Result
-  > {
-  receiveDocument: boolean;
-}
+  > {}
 
 export interface Decorator<Result extends RenderableInline>
   extends Rule<RenderableInline, string[], Result> {

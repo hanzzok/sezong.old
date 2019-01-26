@@ -1,4 +1,5 @@
 import { NormalText, ParagraphSplitBlock, Renderable, Renderer } from './';
+
 export class Platform<Result, MidResult = Result> {
   public renderers: Set<Renderer<any, MidResult>> = new Set();
 

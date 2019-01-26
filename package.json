@@ -1,7 +1,7 @@
 {
   "name": "sezong",
   "description": "Programming Markup Language",
-  "version": "0.3.1",
+  "version": "0.3.5",
   "keywords": [
     "markup",
     "language",
@@ -25,17 +25,17 @@
     "url": "https://ranolp.github.io"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "publish": ""
   },
-  "dependencies": {
-    "fast-check": "^1.10.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@commitlint/cli": "^7.3.2",
     "@commitlint/config-conventional": "^7.3.1",
     "@commitlint/travis-cli": "^7.3.2",
     "@types/jest": "^23.3.12",
     "@types/node": "^10.12.18",
+    "fast-check": "^1.10.0",
     "husky": "^1.3.1",
     "jest": "^23.6.0",
     "prettier": "^1.15.3",
