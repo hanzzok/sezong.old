@@ -1,4 +1,4 @@
-import { ContextualValue, extractContextualValue } from '../values';
+import { ContextualValue, extractContextualValue } from '../values/base';
 import ValidationMessage from './validation-message';
 
 type NotValidationMessage<T> = T extends ValidationMessage ? never : T;

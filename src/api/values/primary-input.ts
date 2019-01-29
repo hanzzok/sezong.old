@@ -1,4 +1,4 @@
-import { NullableContextualFunctionalValue } from '.';
+import { NullableContextualFunctionalValue } from './base';
 
 export interface PrimaryInputContext {
   primaryInput?: string;
