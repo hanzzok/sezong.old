@@ -1,4 +1,4 @@
-import { Configuration } from '../../../api';
+import { Configuration } from '../../../api/configuration-store';
 import { NodeType, Token, TokenType } from '../../../core';
 import ParseState from '../parser-state';
 import { Result } from '../types';

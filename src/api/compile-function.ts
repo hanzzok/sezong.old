@@ -1,7 +1,7 @@
-import { Renderable } from '.';
 import { Message } from '..';
+import { Renderable } from './renderable';
 
-export interface CompileFunction<MidResult> {
+export default interface CompileFunction<MidResult> {
   (source: string | Renderable<any>): {
     result: MidResult[];
     messages: Message[];

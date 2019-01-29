@@ -3,7 +3,7 @@ import {
   ParagraphSplitBlock,
   Renderable,
   RenderableInline
-} from '../../api';
+} from '../../api/renderable';
 import {
   BlockConstructorData,
   DecoratorData,

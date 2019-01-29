@@ -1,7 +1,12 @@
 import { Message } from '../core';
-import { NormalText, ParagraphSplitBlock, Renderable, Renderer } from './';
-import { RenderableBlock } from './renderable';
-import { CompileFunction } from './compile-function';
+import CompileFunction from './compile-function';
+import {
+  NormalText,
+  ParagraphSplitBlock,
+  Renderable,
+  RenderableBlock
+} from './renderable';
+import { Renderer } from './renderer';
 
 export class Platform<Result, MidResult = Result> {
   public blockConstructors: Map<
@@ -80,12 +85,12 @@ export class Platform<Result, MidResult = Result> {
             renderMessages.push(...messages);
           }
           return {
-            result: results,
-            messages: compileMessages.concat(renderMessages)
+            messages: compileMessages.concat(renderMessages),
+            result: results
           };
         } else {
           const [compileRendered, messages] = this.render(source, compile);
-          return { result: [compileRendered], messages };
+          return { messages, result: [compileRendered] };
         }
       }) as CompileFunction<MidResult>);
       if (rendered instanceof Array) {

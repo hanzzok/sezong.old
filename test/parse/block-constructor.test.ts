@@ -1,17 +1,22 @@
-import { AnyRenderer, asJsObject, Platform, Rule } from '../../src/api';
+import { Platform } from '../../src/api';
+import { asJsObject } from '../../src/api/configuration-store';
+import { AnyRenderer } from '../../src/api/renderer';
+import { Rule } from '../../src/api/rule';
 import { BlockConstructorData, Compiler, NodeType } from '../../src/core';
 
 const MockedPlatform = new Platform('Mocked', jest.fn(), jest.fn(), jest.fn());
-const MockedRule = jest.fn<Rule<any, any, any>>(
+const MockedRule = jest.fn<Rule<any, any, any, any>>(
   (namespace: string, name: string) => ({
     name,
     namespace
   })
 );
-const MockedRenderer = jest.fn<AnyRenderer>((target: Rule<any, any, any>) => ({
-  platform: MockedPlatform,
-  target
-}));
+const MockedRenderer = jest.fn<AnyRenderer>(
+  (target: Rule<any, any, any, any>) => ({
+    platform: MockedPlatform,
+    target
+  })
+);
 MockedPlatform.registerBlockConstructor(
   new MockedRenderer(new MockedRule('std', '#'))
 );

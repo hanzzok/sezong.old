@@ -1,4 +1,5 @@
-import { Platform, Renderable } from '../../api';
+import { Platform } from '../../api';
+import { Renderable } from '../../api/renderable';
 import { Message } from '../message';
 
 export function render<T>(

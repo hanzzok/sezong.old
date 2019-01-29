@@ -1,6 +1,8 @@
+import { Platform } from '../api';
 import { Message } from '../core';
-import { Platform, Renderable, Rule } from './';
-import { CompileFunction } from './compile-function';
+import CompileFunction from './compile-function';
+import { Renderable } from './renderable';
+import { Rule } from './rule';
 
 export interface Renderer<T, RenderTarget extends Renderable<T>, MidResult> {
   readonly platform: Platform<any, MidResult>;

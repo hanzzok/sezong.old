@@ -1,4 +1,4 @@
-import { MessageType } from '../../../core';
+import { MessageType } from '../../core';
 
 export default class ValidationMessage {
   constructor(

@@ -1,4 +1,4 @@
-import { AnyBlockConstructor, AnyDecorator } from '../api';
+import { AnyBlockConstructor, AnyDecorator } from '../api/rule';
 
 const SpecialChars = /[`~!@#\$%\^&\*\(\)-_=\+\\;:'",<.>/?]/;
 export default class CompilerConfiguration {

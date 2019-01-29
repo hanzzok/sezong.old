@@ -3,6 +3,8 @@ import PropString from './string';
 import { InputOf, OutputOf, Props } from './types';
 import ValidationMessage from './validation-message';
 
+export * from './types';
+
 export const p = {
   number: () => PropNumber.instance,
   string: () => PropString.instance

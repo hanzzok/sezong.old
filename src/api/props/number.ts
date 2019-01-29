@@ -1,4 +1,4 @@
-import { MessageType } from '../../../core';
+import { MessageType } from '../../core';
 import { Prop } from './base';
 import ValidationMessage from './validation-message';
 

@@ -1,5 +1,5 @@
-import { Decorator, RenderableInline, RenderableText } from '../../../api';
-import { Message, MessageType } from '../../../core';
+import { Message, MessageType } from '../../core';
+import { RenderableInline, RenderableText } from '../renderable';
 import {
   OptionalCondition,
   RedundantCondition,
@@ -7,6 +7,7 @@ import {
   RequiredCondition,
   RequireType
 } from '../require-type';
+import { Decorator } from '../rule';
 
 export interface DecoratorArgument {
   name: string;

@@ -1,11 +1,7 @@
 import { Message } from '../core';
 import { Token } from '../core/tokenize/token';
-import {
-  Configuration,
-  Renderable,
-  RenderableBlock,
-  RenderableInline
-} from './';
+import { Configuration } from './configuration-store';
+import { Renderable, RenderableBlock, RenderableInline } from './renderable';
 
 export interface Rule<
   PrimaryInput,

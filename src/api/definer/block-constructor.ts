@@ -1,14 +1,14 @@
-import { BlockConstructor, RenderableBlock } from '../../../api';
-import { Message, MessageType } from '../../../core';
-import { asJsObject } from '../../configuration-store';
-import { createExtractor } from '../props';
-import { OutputOf, Props } from '../props/types';
+import { Message, MessageType } from '../../core';
+import { asJsObject } from '../configuration-store';
+import { createExtractor, OutputOf, Props } from '../props';
+import { RenderableBlock } from '../renderable';
 import {
   RedundantCondition,
   RequireCondition,
   RequiredCondition,
   RequireType
 } from '../require-type';
+import { BlockConstructor } from '../rule';
 
 export interface BlockConstructorContext {
   primaryInput?: string;

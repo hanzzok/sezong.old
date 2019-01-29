@@ -1,9 +1,9 @@
-import { Message } from '../../../core';
-import { CompileFunction } from '../../compile-function';
-import { Platform } from '../../platform';
-import { Renderable } from '../../renderable';
-import { Renderer } from '../../renderer';
-import { Rule } from '../../rule';
+import { Platform } from '../../api';
+import { Message } from '../../core';
+import CompileFunction from '../compile-function';
+import { Renderable } from '../renderable';
+import { Renderer } from '../renderer';
+import { Rule } from '../rule';
 
 export function defineRenderer<MidResult, T>(
   platform: Platform<any, MidResult>,
