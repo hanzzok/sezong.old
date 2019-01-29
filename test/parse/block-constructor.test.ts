@@ -86,7 +86,8 @@ describe('block constructors', () => {
     expect(asJsObject(data.configuration)).toEqual({
       anchor: 'IsOrderHeading'
     });
-    expect(data.document).toBe(' Document ');
+    expect(data.document).not.toBeUndefined();
+    expect(data.document![0]).toBe(' Document ');
 
     expect(messages.length).toBe(0);
   });
@@ -102,7 +103,8 @@ describe('block constructors', () => {
     expect(data).not.toBe(null);
     expect(data.primaryInput[0]).toBe('Heading');
     expect(data.configuration).toBeUndefined();
-    expect(data.document).toBe(' Document ');
+    expect(data.document).not.toBeUndefined();
+    expect(data.document![0]).toBe(' Document ');
 
     expect(messages.length).toBe(0);
   });
@@ -118,7 +120,8 @@ describe('block constructors', () => {
     expect(data).not.toBe(null);
     expect(data.primaryInput[0]).toBe('');
     expect(data.configuration).toBeUndefined();
-    expect(data.document).toBe(' Document ');
+    expect(data.document).not.toBeUndefined();
+    expect(data.document![0]).toBe(' Document ');
 
     expect(messages.length).toBe(0);
   });
