@@ -1,32 +1,56 @@
-export interface Renderable {
-  debug(): string;
+export abstract class Renderable<PropsType> {
+  constructor(
+    public readonly namespace: string,
+    public readonly name: string,
+    public readonly props: NonNullable<PropsType>
+  ) {}
+
+  public debug(): string {
+    const keys = Object.keys(this.props);
+
+    return `${this.namespace}:${this.name}${
+      keys.length > 0
+        ? `(${keys
+            .map(it => `${it}=${(this.props as any)[it] as string}`)
+            .join(', ')})`
+        : ''
+    }`;
+  }
 }
 
-export abstract class RenderableBlock implements Renderable {
-  public abstract debug(): string;
+export class RenderableBlock<PropsType> extends Renderable<PropsType> {
+  constructor(namespace: string, name: string, props: NonNullable<PropsType>) {
+    super(namespace, name, props);
+  }
 }
 
-export class ParagraphSplitBlock extends RenderableBlock {
+export class ParagraphSplitBlock extends RenderableBlock<{}> {
   public static instance: ParagraphSplitBlock = new ParagraphSplitBlock();
 
   private constructor() {
-    super();
+    super('parser', 'paragraph-split', {});
   }
   public debug(): string {
     return `ParagraphSplit`;
   }
 }
 
-export abstract class RenderableInline implements Renderable {
+export abstract class RenderableInline<PropsType> extends Renderable<
+  PropsType
+> {
   public abstract readonly isEmpty: boolean;
-  public abstract debug(): string;
+
+  constructor(namespace: string, name: string, props: NonNullable<PropsType>) {
+    super(namespace, name, props);
+  }
 }
 
-export class NormalText implements RenderableInline {
+export class NormalText extends RenderableInline<{}> {
   public readonly data: string;
   public readonly isEmpty: boolean;
 
   constructor(data: string) {
+    super('parser', 'normal-text', {});
     this.data = data;
     this.isEmpty = this.data.length <= 0;
   }
@@ -36,12 +60,16 @@ export class NormalText implements RenderableInline {
   }
 }
 
-export abstract class RenderableText implements RenderableInline {
+export class RenderableText<PropsType> extends RenderableInline<PropsType> {
   public readonly isEmpty: boolean;
 
-  constructor(public readonly data: RenderableInline) {
+  constructor(
+    namespace: string,
+    name: string,
+    props: NonNullable<PropsType>,
+    public readonly data: RenderableInline<any>
+  ) {
+    super(namespace, name, props);
     this.isEmpty = data.isEmpty;
   }
-
-  public abstract debug(): string;
 }

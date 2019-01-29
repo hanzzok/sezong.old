@@ -1,5 +1,5 @@
-import { Pos, Token } from './';
-import { Configuration } from './configuration';
+import { Configuration } from '../../api/configuration-store';
+import { Pos, Token } from '../../core';
 
 export interface Node {
   readonly pos: Pos;
@@ -15,14 +15,14 @@ export interface DecoratorData {
 }
 export interface DecoratorFunctionData {
   name: string;
-  parameters: string[];
+  parameter?: [string, Token[]];
 }
 
 export interface BlockConstructorData {
   readonly name: string;
   readonly primaryInput: [string, Token[]];
-  readonly configuration: Configuration | undefined;
-  readonly document: string | undefined;
+  readonly configuration?: Configuration;
+  readonly document?: [string, Token[]];
 }
 
 export enum NodeType {

@@ -1,16 +1,17 @@
 import { Message } from '../core';
+import { Token } from '../core/tokenize/token';
 import {
   Configuration,
   Renderable,
   RenderableBlock,
   RenderableInline
 } from './';
-import { Token } from './token';
 
 export interface Rule<
   PrimaryInput,
   ExtraConfiguration,
-  Result extends Renderable
+  T,
+  Result extends Renderable<T>
 > {
   readonly namespace: string;
   readonly name: string;
@@ -23,21 +24,22 @@ export interface Rule<
   ): Result | Message;
 }
 
-export interface BlockConstructor<Result extends RenderableBlock>
+export interface BlockConstructor<T, Result extends RenderableBlock<T>>
   extends Rule<
     string,
     {
       configuration: Configuration | undefined;
-      document: string | undefined;
+      document: [string, Token[]] | undefined;
     },
+    T,
     Result
   > {}
 
-export interface Decorator<Result extends RenderableInline>
-  extends Rule<RenderableInline, string[], Result> {
+export interface Decorator<T, Result extends RenderableInline<T>>
+  extends Rule<RenderableInline<T>, [string, Token[]] | undefined, T, Result> {
   readonly reduceIfTextEmpty?: false | null;
 }
 
-export type AnyBlockConstructor = BlockConstructor<RenderableBlock>;
+export type AnyBlockConstructor = BlockConstructor<{}, RenderableBlock<{}>>;
 
-export type AnyDecorator = Decorator<RenderableInline>;
+export type AnyDecorator = Decorator<{}, RenderableInline<{}>>;

@@ -1,4 +1,4 @@
-import { Token, TokenType } from '../../api';
+import { Token, TokenType } from '../../core';
 import Cache from './cache';
 import TokenizerState from './tokenizer-state';
 

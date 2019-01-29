@@ -1,19 +1,21 @@
 import {
-  BlockConstructorData,
-  DecoratorData,
-  Node,
-  NodeType,
   NormalText,
   ParagraphSplitBlock,
   Renderable,
   RenderableInline
 } from '../../api';
+import {
+  BlockConstructorData,
+  DecoratorData,
+  Node,
+  NodeType
+} from '../../core';
 import { CompilerConfiguration, Message } from '../../core';
 
 export default function link(
   configuration: CompilerConfiguration,
   nodes: Node[]
-): [Renderable[], Message[]] {
+): [Array<Renderable<any>>, Message[]] {
   const messages: Message[] = [];
   return [
     nodes
@@ -48,7 +50,7 @@ export default function link(
           }
           case NodeType.Decorator: {
             const data = node.data as DecoratorData;
-            let value: RenderableInline = new NormalText(data.input[0]);
+            let value: RenderableInline<any> = new NormalText(data.input[0]);
 
             for (const fun of data.functions) {
               const rule = configuration.decorators.find(
@@ -59,7 +61,7 @@ export default function link(
               if (rule && !(value.isEmpty && rule.reduceIfTextEmpty)) {
                 const result = rule.compile(
                   [value, data.input[1]],
-                  fun.parameters,
+                  fun.parameter,
                   messages,
                   node.tokens
                 );
@@ -81,7 +83,7 @@ export default function link(
         } else {
           return true;
         }
-      }) as Renderable[],
+      }) as Array<Renderable<any>>,
     messages
   ];
 }

@@ -1,5 +1,4 @@
-import { Node, Token } from '../../api';
-import { Message } from '../../core';
+import { Message, Node, Token } from '../../core';
 
 export type Result = Node | null | Message;
 export type AssertResult = Token[] | Result;

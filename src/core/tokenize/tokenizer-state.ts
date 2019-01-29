@@ -1,4 +1,4 @@
-import { Pos } from '../../api';
+import { Pos } from '../../core';
 
 export default class TokenizerState {
   public pos: Pos = {

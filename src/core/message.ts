@@ -1,17 +1,11 @@
-import { Token } from '../api';
-
 export class Message {
-  public readonly type: MessageType;
-  public readonly text: string;
-  public readonly from: Token;
-  public readonly to: Token;
-
-  constructor(type: MessageType, text: string, from: Token, to: Token) {
-    this.type = type;
-    this.text = text;
-    this.from = from;
-    this.to = to;
-  }
+  constructor(
+    public readonly type: MessageType,
+    public readonly text: string,
+    public readonly line: number,
+    public readonly from: number,
+    public readonly to: number
+  ) {}
 }
 
 export const enum MessageType {

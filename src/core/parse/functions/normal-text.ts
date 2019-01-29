@@ -1,4 +1,4 @@
-import { Node, NodeType, Token, TokenType } from '../../../api';
+import { Node, NodeType, Token, TokenType } from '../../../core';
 import ParseState from '../parser-state';
 
 export default function nextNormalText(

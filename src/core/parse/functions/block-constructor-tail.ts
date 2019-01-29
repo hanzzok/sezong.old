@@ -1,4 +1,5 @@
-import { Configuration, NodeType, Token, TokenType } from '../../../api';
+import { Configuration } from '../../../api';
+import { NodeType, Token, TokenType } from '../../../core';
 import ParseState from '../parser-state';
 import { Result } from '../types';
 
@@ -45,7 +46,7 @@ export default function nextBlockConstructorTail(
 
 function nextBlockConstructorOptionalInput(
   state: ParseState
-): [Token[], Configuration | undefined, string | undefined] {
+): [Token[], Configuration | undefined, [string, Token[]] | undefined] {
   if (
     !state.hasCurrent(TokenType.CurlyBracketStart) &&
     !state.hasCurrent(TokenType.DoubleAngleBracketEnd)
@@ -64,7 +65,7 @@ function nextBlockConstructorOptionalInput(
     tokens.push(...state.skipWhitespace());
   }
 
-  let document: string | undefined;
+  let document: [string, Token[]] | undefined;
   if (state.hasCurrent(TokenType.DoubleAngleBracketEnd)) {
     tokens.push(state.cursorNext());
     document = nextDocument(tokens, state);
@@ -146,7 +147,7 @@ function nextConfiguration(
   return value;
 }
 
-function nextDocument(tokens: Token[], state: ParseState): string {
+function nextDocument(tokens: Token[], state: ParseState): [string, Token[]] {
   let angle = 1;
   const documentTokens = state.until(
     token => {
@@ -164,8 +165,11 @@ function nextDocument(tokens: Token[], state: ParseState): string {
   tokens.push(...documentTokens);
   tokens.push(state.cursorNext());
 
-  return documentTokens
-    .slice(0, -1)
-    .map(it => it.source)
-    .join('');
+  return [
+    documentTokens
+      .slice(0, -1)
+      .map(it => it.source)
+      .join(''),
+    documentTokens
+  ];
 }

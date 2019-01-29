@@ -1,4 +1,4 @@
-import { Pos } from './';
+import Pos from './pos';
 
 export class Token {
   public readonly pos: Pos;

@@ -1,28 +1,21 @@
-import {
-  AnyBlockConstructor,
-  AnyRenderer,
-  asJsObject,
-  BlockConstructorData,
-  NodeType,
-  Platform
-} from '../../src/api';
-import { Compiler } from '../../src/core';
+import { AnyRenderer, asJsObject, Platform, Rule } from '../../src/api';
+import { BlockConstructorData, Compiler, NodeType } from '../../src/core';
 
-const MockedPlatform = jest.fn<Platform<any, any>>(() => ({
-  renderers: new Set()
-}));
-const MockedBlockConstructor = jest.fn<AnyBlockConstructor>(
+const MockedPlatform = new Platform('Mocked', jest.fn(), jest.fn(), jest.fn());
+const MockedRule = jest.fn<Rule<any, any, any>>(
   (namespace: string, name: string) => ({
     name,
     namespace
   })
 );
-const MockedRenderer = jest.fn<AnyRenderer>(() => ({}));
-const compiler = new Compiler<any, any>(new MockedPlatform());
-compiler.addBlockConstructor(
-  new MockedBlockConstructor('test', '#'),
-  new MockedRenderer()
+const MockedRenderer = jest.fn<AnyRenderer>((target: Rule<any, any, any>) => ({
+  platform: MockedPlatform,
+  target
+}));
+MockedPlatform.registerBlockConstructor(
+  new MockedRenderer(new MockedRule('std', '#'))
 );
+const compiler = new Compiler<any, any>(MockedPlatform);
 
 describe('block constructors', () => {
   it('special without primary input, configuration and document', () => {

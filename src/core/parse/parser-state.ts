@@ -1,5 +1,4 @@
-import { Token, TokenType } from '../../api';
-import { Message } from '../../core';
+import { Message, Token, TokenType } from '../../core';
 import { TokenCondition } from './types';
 
 export default class ParseState {

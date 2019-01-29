@@ -1,5 +1,5 @@
-import { TokenType } from '../../../api/token';
 import { CompilerConfiguration } from '../../../core';
+import { TokenType } from '../../tokenize/token';
 import ParseState from '../parser-state';
 import { Result } from '../types';
 import nextBlockConstructorTail from './block-constructor-tail';

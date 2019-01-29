@@ -1,4 +1,4 @@
-import { Pos, Token, TokenType } from '../../api';
+import { Pos, Token, TokenType } from '../../core';
 import TokenizerState from './tokenizer-state';
 
 export default class Cache {

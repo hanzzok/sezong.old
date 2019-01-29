@@ -1,5 +1,11 @@
-import { Node, NodeType, Token, TokenType } from '../../api';
-import { CompilerConfiguration, Message } from '../../core';
+import {
+  CompilerConfiguration,
+  Message,
+  Node,
+  NodeType,
+  Token,
+  TokenType
+} from '../../core';
 import nextNormalBlockConstructor from './functions/block-constructor-normal';
 import nextSpecialBlockConstructor from './functions/block-constructor-special';
 import nextDecorator from './functions/decorator';

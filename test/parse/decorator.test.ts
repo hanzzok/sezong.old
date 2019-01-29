@@ -1,21 +1,21 @@
-import { Compiler, MessageType } from '../../src';
-import { AnyDecorator, AnyRenderer, NodeType, Platform } from '../../src/api';
+import { Compiler, MessageType, NodeType } from '../../src';
+import { AnyRenderer, Platform, Rule } from '../../src/api';
 
-const MockedPlatform = jest.fn<Platform<any, any>>(() => ({
-  renderers: new Set()
-}));
-const MockedDecorator = jest.fn<AnyDecorator>(
+const MockedPlatform = new Platform('Mocked', jest.fn(), jest.fn(), jest.fn());
+const MockedRule = jest.fn<Rule<any, any, any>>(
   (namespace: string, name: string) => ({
     name,
     namespace
   })
 );
-const MockedRenderer = jest.fn<AnyRenderer>(() => ({}));
-const compiler = new Compiler<any, any>(new MockedPlatform());
-compiler.addDecorator(
-  new MockedDecorator('test', 'known'),
-  new MockedRenderer()
+const MockedRenderer = jest.fn<AnyRenderer>((target: Rule<any, any, any>) => ({
+  platform: MockedPlatform,
+  target
+}));
+MockedPlatform.registerDecorator(
+  new MockedRenderer(new MockedRule('std', 'known'))
 );
+const compiler = new Compiler<any, any>(MockedPlatform);
 
 describe('decorators', () => {
   it('known', () => {
