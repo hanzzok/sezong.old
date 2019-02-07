@@ -8,23 +8,23 @@ import {
 } from './renderable';
 import { Renderer } from './renderer';
 
-export class Platform<Result, MidResult = Result> {
+export class Platform<MidResult, Result> {
   public blockConstructors: Map<
     string,
-    Renderer<any, any, MidResult>
+    Renderer<unknown, MidResult>
   > = new Map();
-  public decorators: Map<string, Renderer<any, any, MidResult>> = new Map();
+  public decorators: Map<string, Renderer<unknown, MidResult>> = new Map();
 
   constructor(
     public readonly name: string,
     public readonly compose: (midResults: MidResult[]) => Result,
-    private readonly renderNormalText: (text: NormalText) => MidResult,
-    private readonly renderParagraphSplit: (
+    public readonly renderNormalText: (text: NormalText) => MidResult,
+    public readonly renderParagraphSplit: (
       paragraphSplit: ParagraphSplitBlock
     ) => MidResult
   ) {}
 
-  public registerBlockConstructor(renderer: Renderer<any, any, MidResult>) {
+  public registerBlockConstructor(renderer: Renderer<unknown, MidResult>) {
     this.blockConstructors.set(
       `${renderer.target.namespace}:${renderer.target.name}`,
       renderer
@@ -32,29 +32,29 @@ export class Platform<Result, MidResult = Result> {
   }
 
   public registerBlockConstructors(
-    renderers: Array<Renderer<any, any, MidResult>>
+    renderers: Array<Renderer<unknown, MidResult>>
   ) {
     for (const renderer of renderers) {
       this.registerBlockConstructor(renderer);
     }
   }
 
-  public registerDecorator(renderer: Renderer<any, any, MidResult>) {
+  public registerDecorator(renderer: Renderer<unknown, MidResult>) {
     this.decorators.set(
       `${renderer.target.namespace}:${renderer.target.name}`,
       renderer
     );
   }
 
-  public registerDecorators(renderers: Array<Renderer<any, any, MidResult>>) {
+  public registerDecorators(renderers: Array<Renderer<unknown, MidResult>>) {
     for (const renderer of renderers) {
       this.registerDecorator(renderer);
     }
   }
 
   public render(
-    renderable: Renderable<any>,
-    compile: (source: string) => [Array<Renderable<any>>, Message[]]
+    renderable: Renderable<unknown>,
+    compile: (source: string) => [Array<Renderable<unknown>>, Message[]]
   ): [MidResult, Message[]] {
     if (renderable instanceof ParagraphSplitBlock) {
       return [this.renderParagraphSplit(renderable), []];
@@ -69,7 +69,7 @@ export class Platform<Result, MidResult = Result> {
     ).get(`${renderable.namespace}:${renderable.name}`);
     if (renderer) {
       const rendered = renderer.render(renderable.props, ((
-        source: string | Renderable<any>,
+        source: string | Renderable<unknown>,
         raw?: true
       ) => {
         if (typeof source === 'string' && raw) {
@@ -107,7 +107,7 @@ export class Platform<Result, MidResult = Result> {
 
   public renderAll(
     renderables: Array<Renderable<any>>,
-    compile: (source: string) => [Array<Renderable<any>>, Message[]]
+    compile: (source: string) => [Array<Renderable<unknown>>, Message[]]
   ): [Result, Message[]] {
     const results: MidResult[] = [];
     const messages: Message[] = [];

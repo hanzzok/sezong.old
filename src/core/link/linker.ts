@@ -15,7 +15,7 @@ import { CompilerConfiguration, Message } from '../../core';
 export default function link(
   configuration: CompilerConfiguration,
   nodes: Node[]
-): [Array<Renderable<any>>, Message[]] {
+): [Array<Renderable<unknown>>, Message[]] {
   const messages: Message[] = [];
   return [
     nodes
@@ -50,7 +50,9 @@ export default function link(
           }
           case NodeType.Decorator: {
             const data = node.data as DecoratorData;
-            let value: RenderableInline<any> = new NormalText(data.input[0]);
+            let value: RenderableInline<unknown> = new NormalText(
+              data.input[0]
+            );
 
             for (const fun of data.functions) {
               const rule = configuration.decorators.find(
@@ -83,7 +85,7 @@ export default function link(
         } else {
           return true;
         }
-      }) as Array<Renderable<any>>,
+      }) as Array<Renderable<unknown>>,
     messages
   ];
 }

@@ -16,54 +16,53 @@ export interface BlockConstructorContext {
 }
 
 export type BlockConstructorConfiguration<
-  T extends Props<BlockConstructorContext>
-> = [RequireCondition, T];
+  P extends Props<BlockConstructorContext>
+> = [RequireCondition, P];
 
-export interface BlockConstructorArgument<
-  T extends Props<BlockConstructorContext>
-> {
-  configuration: BlockConstructorConfiguration<T>;
-  document: RequireCondition;
+export interface BlockConstructorArgument
+  extends SimplerBlockConstructorArgument {
   name: string;
   namespace: string;
+}
+
+export interface SimplerBlockConstructorArgument {
+  document: RequireCondition;
   primaryInput: RequireCondition;
 }
 
 export type BlockConstructorProps<
-  T extends BlockConstructorArgument<P>,
-  P extends Props<BlockConstructorContext>
-> = {
-  props: OutputOf<P>;
-} & (T['primaryInput'] extends RedundantCondition
+  A extends SimplerBlockConstructorArgument
+> = (A['primaryInput'] extends RedundantCondition
   ? {}
-  : T['primaryInput'] extends RequiredCondition
+  : A['primaryInput'] extends RequiredCondition
   ? { primaryInput: string }
   : { primaryInput?: string }) &
-  (T['document'] extends RedundantCondition
+  (A['document'] extends RedundantCondition
     ? {}
-    : T['document'] extends RequiredCondition
+    : A['document'] extends RequiredCondition
     ? { document: string }
     : { document?: string });
 
 export function defineBlockConstructor<
-  T extends BlockConstructorArgument<P>,
-  P extends Props<BlockConstructorContext>
+  A extends BlockConstructorArgument,
+  P extends Props<BlockConstructorContext> & {
+    primaryInput?: undefined;
+    document?: undefined;
+  }
 >(
-  argument: T
-): BlockConstructor<
-  BlockConstructorProps<T, P>,
-  RenderableBlock<BlockConstructorProps<T, P>>
-> {
-  class RenderableType extends RenderableBlock<BlockConstructorProps<T, P>> {
-    constructor(props: NonNullable<BlockConstructorProps<T, P>>) {
+  argument: A & {
+    configuration: [RequireCondition, P];
+  }
+): BlockConstructor<BlockConstructorProps<A> & OutputOf<P>> {
+  class RenderableType extends RenderableBlock<
+    BlockConstructorProps<A> & OutputOf<P>
+  > {
+    constructor(props: NonNullable<BlockConstructorProps<A> & OutputOf<P>>) {
       super(argument.namespace, argument.name, props);
     }
   }
 
-  const Rule: BlockConstructor<
-    BlockConstructorProps<T, P>,
-    RenderableBlock<BlockConstructorProps<T, P>>
-  > = {
+  const Rule: BlockConstructor<BlockConstructorProps<A> & OutputOf<P>> = {
     compile: (
       [primaryInput, primaryInputTokens],
       { configuration, document },
@@ -204,8 +203,8 @@ export function defineBlockConstructor<
           argument.primaryInput.type === RequireType.Redundant
             ? undefined
             : primaryInput,
-        props
-      } as any) as NonNullable<BlockConstructorProps<T, P>>);
+        ...props
+      } as unknown) as NonNullable<BlockConstructorProps<A> & OutputOf<P>>);
     },
     name: argument.name,
     namespace: argument.namespace

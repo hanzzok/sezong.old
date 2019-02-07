@@ -15,7 +15,7 @@ function omit<T, K>(origin: T, excludes: K[]): Omit<T, K> {
   return result as Omit<T, K>;
 }
 
-export default class PropNumber extends Prop<any, number> {
+export default class PropNumber extends Prop<unknown, number> {
   public static readonly instance = new PropNumber();
   private constructor() {
     super((value, _, key) => {

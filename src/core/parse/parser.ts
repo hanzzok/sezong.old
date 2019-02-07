@@ -1,6 +1,5 @@
 import {
   CompilerConfiguration,
-  Message,
   Node,
   NodeType,
   Token,
@@ -11,7 +10,6 @@ import nextSpecialBlockConstructor from './functions/block-constructor-special';
 import nextDecorator from './functions/decorator';
 import nextNormalText from './functions/normal-text';
 import ParseState from './parser-state';
-import { Result } from './types';
 
 export default class Parser {
   public state: ParseState;
@@ -47,36 +45,26 @@ export default class Parser {
     if (!this.state.hasCurrent()) {
       return null;
     }
-    let result: Result;
     switch (this.state.currentToken.type) {
       case TokenType.NormalText: {
         if (
           this.state.currentToken.source in
           this.configuration.blockConstructorSpecialNames
         ) {
-          result = nextSpecialBlockConstructor(this.configuration, this.state);
+          return nextSpecialBlockConstructor(this.configuration, this.state);
         } else {
           return nextNormalText(this.state);
         }
-        break;
       }
       case TokenType.VerticalBar: {
-        result = nextNormalBlockConstructor(this.configuration, this.state);
-        break;
+        return nextNormalBlockConstructor(this.configuration, this.state);
       }
       case TokenType.SquareBracketStart: {
-        result = nextDecorator(this.state, this.configuration);
-        break;
+        return nextDecorator(this.state, this.configuration);
       }
       default: {
         return nextNormalText(this.state);
       }
-    }
-    if (result instanceof Message) {
-      this.state.messages.push(result);
-      return this.nextNode();
-    } else {
-      return result;
     }
   }
 }

@@ -2,7 +2,7 @@ import { Message } from '..';
 import { Renderable } from './renderable';
 
 export default interface CompileFunction<MidResult> {
-  (source: string | Renderable<any>): {
+  (source: string | Renderable<unknown>): {
     result: MidResult[];
     messages: Message[];
   };

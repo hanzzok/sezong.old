@@ -11,7 +11,7 @@ export type Extractor<C, T> = (
 ) => NotValidationMessage<T> | ValidationMessage | void;
 
 export abstract class AbstractProp<C, T> {
-  public readonly T: T = (null as any) as NotValidationMessage<T>;
+  public readonly T: T = (null as unknown) as NotValidationMessage<T>;
 
   public constructor(public readonly extract: Extractor<C, T>) {}
 

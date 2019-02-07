@@ -29,14 +29,17 @@ type OutputOf<
 
 export function defineDecorator<T extends DecoratorArgument>(
   argument: T
-): Decorator<OutputOf<T>, RenderableText<OutputOf<T>>> {
+): Decorator<OutputOf<T>> {
   class RenderableType extends RenderableText<OutputOf<T>> {
-    constructor(props: NonNullable<OutputOf<T>>, data: RenderableInline<any>) {
+    constructor(
+      props: NonNullable<OutputOf<T>>,
+      data: RenderableInline<unknown>
+    ) {
       super(argument.namespace, argument.name, props, data);
     }
   }
 
-  const Rule: Decorator<OutputOf<T>, RenderableText<OutputOf<T>>> = {
+  const Rule: Decorator<OutputOf<T>> = {
     compile: (
       [primaryInput, primaryInputTokens],
       parameter,
@@ -126,7 +129,7 @@ export function defineDecorator<T extends DecoratorArgument>(
             argument.primaryInput.type === RequireType.Redundant
               ? undefined
               : primaryInput
-        } as any) as NonNullable<OutputOf<T>>,
+        } as unknown) as NonNullable<OutputOf<T>>,
         primaryInput
       );
     },

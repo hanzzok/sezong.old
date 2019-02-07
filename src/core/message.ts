@@ -8,7 +8,7 @@ export class Message {
   ) {}
 }
 
-export const enum MessageType {
+export enum MessageType {
   Informal,
   Warning,
   Error

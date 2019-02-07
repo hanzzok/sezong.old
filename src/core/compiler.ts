@@ -1,5 +1,6 @@
 import { Platform } from '../api';
 import { Renderable } from '../api/renderable';
+import { AnyDecorator } from '../api/rule';
 import {
   CompilerConfiguration,
   link,
@@ -15,9 +16,9 @@ import { Node } from './parse/node';
 export default class Compiler<ResultType, MidResultType> {
   private configuration: CompilerConfiguration;
 
-  constructor(private readonly platform: Platform<ResultType, MidResultType>) {
+  constructor(private readonly platform: Platform<MidResultType, ResultType>) {
     this.configuration = new CompilerConfiguration(
-      [...platform.decorators.values()].map(it => it.target),
+      [...platform.decorators.values()].map(it => it.target as AnyDecorator),
       [...platform.blockConstructors.values()].map(it => it.target)
     );
   }
@@ -31,12 +32,12 @@ export default class Compiler<ResultType, MidResultType> {
     return [parser.parse(), parser.state.messages];
   }
 
-  public link(nodes: Node[]): [Array<Renderable<any>>, Message[]] {
+  public link(nodes: Node[]): [Array<Renderable<unknown>>, Message[]] {
     return link(this.configuration, nodes);
   }
 
   public render(
-    renderables: Array<Renderable<any>>
+    renderables: Array<Renderable<unknown>>
   ): [MidResultType[], Message[]] {
     return render(this.platform, renderables, source =>
       this.renderCompileFunction(source)
@@ -44,7 +45,7 @@ export default class Compiler<ResultType, MidResultType> {
   }
 
   public renderAll(
-    renderables: Array<Renderable<any>>
+    renderables: Array<Renderable<unknown>>
   ): [ResultType, Message[]] {
     return renderAll(this.platform, renderables, source =>
       this.renderCompileFunction(source)
@@ -67,7 +68,7 @@ export default class Compiler<ResultType, MidResultType> {
 
   private renderCompileFunction(
     source: string
-  ): [Array<Renderable<any>>, Message[]] {
+  ): [Array<Renderable<unknown>>, Message[]] {
     const tokens = this.tokenize(source);
     const [nodes, parseMessages] = this.parse(tokens);
     const [renderables, linkMessages] = this.link(nodes);

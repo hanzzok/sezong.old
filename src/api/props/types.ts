@@ -6,7 +6,4 @@ export type Props<C> = Record<string, ValidProp<C, any>>;
 
 export type InputOf<T extends Props<any>> = { [K in keyof T]?: string };
 
-export type UnpackOutput<T extends ValidProp<any, T>> = T['T'];
-export type OutputOf<T extends Props<any>> = {
-  [K in keyof T]: UnpackOutput<T[K]>
-};
+export type OutputOf<T extends Props<any>> = { [K in keyof T]: T[K]['T'] };

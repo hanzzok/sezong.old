@@ -4,18 +4,16 @@ import { AnyRenderer } from '../../src/api/renderer';
 import { Rule } from '../../src/api/rule';
 
 const MockedPlatform = new Platform('Mocked', jest.fn(), jest.fn(), jest.fn());
-const MockedRule = jest.fn<Rule<any, any, any, any>>(
+const MockedRule = jest.fn<Rule<any, any, any>>(
   (namespace: string, name: string) => ({
     name,
     namespace
   })
 );
-const MockedRenderer = jest.fn<AnyRenderer>(
-  (target: Rule<any, any, any, any>) => ({
-    platform: MockedPlatform,
-    target
-  })
-);
+const MockedRenderer = jest.fn<AnyRenderer>((target: Rule<any, any, any>) => ({
+  platform: MockedPlatform,
+  target
+}));
 MockedPlatform.registerDecorator(
   new MockedRenderer(new MockedRule('std', 'known'))
 );

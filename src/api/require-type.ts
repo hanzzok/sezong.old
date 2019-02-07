@@ -1,4 +1,4 @@
-export const enum RequireType {
+export enum RequireType {
   Optional,
   Required,
   Redundant

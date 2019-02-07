@@ -67,7 +67,7 @@ export class RenderableText<PropsType> extends RenderableInline<PropsType> {
     namespace: string,
     name: string,
     props: NonNullable<PropsType>,
-    public readonly data: RenderableInline<any>
+    public readonly data: RenderableInline<unknown>
   ) {
     super(namespace, name, props);
     this.isEmpty = data.isEmpty;

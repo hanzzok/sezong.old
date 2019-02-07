@@ -25,7 +25,7 @@ export function createExtractor<C, T extends Props<C>>(
           unknownKeyAcceptor(key);
           continue;
         }
-        result[key] = props[key].extract(
+        result[key] = props[key]!.extract(
           inputReal[key],
           context,
           key,
@@ -37,7 +37,7 @@ export function createExtractor<C, T extends Props<C>>(
       if (result[key]) {
         continue;
       }
-      result[key] = props[key].extract(undefined, context, key, messages);
+      result[key] = props[key]!.extract(undefined, context, key, messages);
     }
     return [result as OutputOf<T>, messages];
   };

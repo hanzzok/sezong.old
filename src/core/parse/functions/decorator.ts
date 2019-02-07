@@ -6,16 +6,16 @@ import {
   Token,
   TokenType
 } from '../../../core';
+import { DecoratorFunctionData } from '../node';
 import ParseState from '../parser-state';
 import { Result } from '../types';
 import nextNormalText from './normal-text';
-import { DecoratorFunctionData } from '../node';
 
 export default function nextDecorator(
   state: ParseState,
   configuration: CompilerConfiguration
 ): Result {
-  if (!state.hasCurrent(TokenType.SquareBracketStart)) {
+  if (!state.hasCurrent(TokenType.SquareBracketStart) && state.hasCurrent()) {
     return nextNormalText(state, [state.cursorNext()]);
   }
   const tokens = [state.cursorNext()];
@@ -38,6 +38,7 @@ export default function nextDecorator(
         eatLast: true
       }
     );
+    tokens.push(...chunk);
     return chunk.slice(-2)[0];
   };
 
@@ -50,13 +51,16 @@ export default function nextDecorator(
       }
       const first = state.currentToken.pos;
       const last = end() || tokens.slice(-1)[0];
-      return new Message(
-        MessageType.Error,
-        'Decorator must not contain two or more texts',
-        first.line,
-        first.column,
-        last.pos.column + last.length
+      state.messages.push(
+        new Message(
+          MessageType.Error,
+          'Decorator must not contain two or more texts',
+          first.line,
+          first.column,
+          last.pos.column + last.length
+        )
       );
+      return nextNormalText(state, tokens);
     }
     tokens.push.apply(tokens, state.skipWhitespace());
     isFirst = false;
@@ -79,7 +83,8 @@ export default function nextDecorator(
     functionTokens.push(nameToken);
 
     if (state.hasCurrent(TokenType.RoundBracketStart)) {
-      functionTokens.push(state.cursorNext());
+      const bracketStart = state.cursorNext();
+      functionTokens.push(bracketStart);
       const parameter: Token[] = state.until(
         token =>
           token.type !== TokenType.RoundBracketEnd &&
@@ -88,15 +93,18 @@ export default function nextDecorator(
 
       functionTokens.push(...parameter);
       if (!state.hasCurrent(TokenType.RoundBracketEnd)) {
-        const first = parameter[0].pos;
-        const last = parameter.slice(-1)[0];
-        return new Message(
-          MessageType.Error,
-          'Decorator function invokation not completed',
-          first.line,
-          first.column,
-          last.pos.column + last.length
+        const first = bracketStart.pos;
+        const last = functionTokens.slice(-1)[0];
+        state.messages.push(
+          new Message(
+            MessageType.Error,
+            'Decorator function invokation not completed',
+            first.line,
+            first.column,
+            last.pos.column + last.length
+          )
         );
+        return nextNormalText(state, tokens);
       }
       functionTokens.push(state.cursorNext());
       functions.push({
